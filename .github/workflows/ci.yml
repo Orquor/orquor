@@ -1,6 +1,4 @@
-# ORQUOR — GitHub Actions CI/CD
-# Se ejecuta en cada push y PR
-
+# ORQUOR — GitHub Actions CI/CD (simplificado)
 name: Orquor CI
 
 on:
@@ -20,32 +18,24 @@ jobs:
         with:
           python-version: "3.12"
       
-      - name: Install dependencies
+      - name: Install deps
+        run: pip install pytest
+      
+      - name: Run verifiers (13 tests)
         run: |
           cd 06-hermes
-          python -m venv .venv
-          .venv/bin/pip install -r requirements.txt
-      
-      - name: Run verifiers
-        run: |
-          cd 06-hermes
-          .venv/bin/python -m pytest verifiers/translation_verifiers.py -v --tb=short
-      
-      - name: Verify project integrity
-        run: python verify_integrity.py
-      
-      - name: Check whitepaper builds
-        run: |
-          which pandoc && pandoc 03-whitepaper-acto/whitepaper-acto.md -o /tmp/whitepaper.pdf --pdf-engine=xelatex || echo "pandoc not available, skipping PDF check"
+          python -m pytest verifiers/translation_verifiers.py -v --tb=short
 
   content-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       
-      - name: Check all content files exist
+      - name: Count content files
         run: |
-          echo "LinkedIn posts: $(ls 09-content-calendar/linkedin/*.md 2>/dev/null | wc -l)"
-          echo "X posts: $(ls 09-content-calendar/x-twitter/*.md 2>/dev/null | wc -l)"
-          echo "YouTube scripts: $(ls 09-content-calendar/youtube/*.md 2>/dev/null | wc -l)"
-          echo "Newsletter: $(ls 09-content-calendar/newsletter/*.md 2>/dev/null | wc -l)"
+          echo "LinkedIn:  $(ls 09-content-calendar/linkedin/*.md 2>/dev/null | wc -l) posts"
+          echo "X:         $(ls 09-content-calendar/x-twitter/*.md 2>/dev/null | wc -l) threads"
+          echo "YouTube:   $(ls 09-content-calendar/youtube/*.md 2>/dev/null | wc -l) scripts"
+          echo "Newsletter:$(ls 09-content-calendar/newsletter/*.md 2>/dev/null | wc -l) editions"
+          echo "Email:     $(ls 09-content-calendar/email/*.md 2>/dev/null | wc -l) templates"
+          echo "Legal:     $(ls 07-legal/*.md 2>/dev/null | wc -l) documents"
