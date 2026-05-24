@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ORQUOR · Internal Dashboard</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0B0F14;
+      --bone: #F4F1EB;
+      --signal: #3B82F6;
+      --signal-soft: rgba(59,130,246,0.08);
+      --signal-glow: rgba(59,130,246,0.14);
+      --verify: #10B981;
+      --alert: #F59E0B;
+      --error: #EF4444;
+      --muted: #64748B;
+      --muted-light: #94A3B8;
+      --stroke: #1E293B;
+      --stroke-light: #263144;
+      --surface: #111820;
+      --surface-hover: #161e2a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      background: var(--ink);
+      color: var(--bone);
+      font-family: "Inter", system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ── Top Bar ─────────────────────────────── */
+    .topbar {
+      padding: 14px 28px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--stroke);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .topbar-brand {
+      font-family: "Inter Tight", sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .topbar-brand .dot { color: var(--signal); }
+    .topbar-badge {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px;
+      font-weight: 500;
+      background: var(--signal-soft);
+      color: var(--signal);
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border: 1px solid rgba(59,130,246,0.18);
+    }
+    .topbar-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--verify);
+      display: inline-block;
+      animation: pulse 2s ease-in-out infinite;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .refresh-tag {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      color: var(--muted-light);
+    }
+
+    /* ── Main Grid ───────────────────────────── */
+    .dashboard {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 24px 28px 48px;
+    }
+    .grid-main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .grid-full {
+      grid-column: 1 / -1;
+    }
+    @media (max-width: 1024px) {
+      .grid-main { grid-template-columns: 1fr; }
+    }
+
+    /* ── Section Headers ─────────────────────── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: "Inter Tight", sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      color: var(--bone);
+    }
+    .section-sub {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Panel ───────────────────────────────── */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--stroke);
+      border-radius: 8px;
+      padding: 24px;
+    }
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--stroke);
+    }
+    .panel-icon {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      color: var(--signal);
+      margin-right: 8px;
+    }
+
+    /* ── System Status Grid ──────────────────── */
+    .sys-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 640px) {
+      .sys-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .sys-card {
+      background: var(--ink);
+      border: 1px solid var(--stroke-light);
+      border-radius: 6px;
+      padding: 18px 16px;
+      text-align: center;
+    }
+    .sys-icon {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+    .sys-value {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--bone);
+      margin-bottom: 4px;
+    }
+    .sys-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .sys-bar-bg {
+      margin-top: 8px;
+      height: 4px;
+      background: var(--stroke);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .sys-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.6s ease;
+    }
+    .sys-bar-fill.good { background: var(--verify); }
+    .sys-bar-fill.warn { background: var(--alert); }
+    .sys-bar-fill.crit { background: var(--error); }
+
+    /* ── Node List ───────────────────────────── */
+    .node-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+    }
+    .node-row:last-child { border-bottom: none; }
+    .node-name { color: var(--muted-light); }
+    .node-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .node-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .node-dot.online { background: var(--verify); }
+    .node-dot.warn { background: var(--alert); }
+
+    /* ── Verifier Metrics ────────────────────── */
+    .verifier-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 500px) {
+      .verifier-grid { grid-template-columns: 1fr; }
+    }
+    .verifier-big-num {
+      text-align: center;
+      padding: 20px;
+      border: 1px solid var(--stroke-light);
+      border-radius: 6px;
+      background: var(--ink);
+    }
+    .verifier-big-num .big {
+      font-family: "Inter Tight", sans-serif;
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .verifier-big-num .big.pass { color: var(--verify); }
+    .verifier-big-num .big.fail { color: var(--error); }
+    .verifier-big-num .big.warn { color: var(--alert); }
+    .verifier-big-num .lbl {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    .verify-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .verify-table th {
+      text-align: left;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--stroke);
+    }
+    .verify-table td {
+      padding: 9px 10px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .verify-table .v-name { color: var(--muted-light); }
+    .verify-table .v-pass { color: var(--verify); font-weight: 500; }
+    .verify-table .v-fail { color: var(--error); font-weight: 500; }
+    .verify-table .v-rate { color: var(--bone); }
+
+    .pass-bar {
+      height: 6px;
+      background: var(--stroke);
+      border-radius: 3px;
+      overflow: hidden;
+      width: 80px;
+    }
+    .pass-bar .fill {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--verify);
+    }
+    .pass-bar .fill.warn {
+      background: var(--alert);
+    }
+
+    /* ── Activity Feed ───────────────────────── */
+    .activity-feed {
+      max-height: 420px;
+      overflow-y: auto;
+    }
+    .activity-feed::-webkit-scrollbar { width: 4px; }
+    .activity-feed::-webkit-scrollbar-track { background: transparent; }
+    .activity-feed::-webkit-scrollbar-thumb { background: var(--stroke-light); border-radius: 2px; }
+
+    .activity-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      align-items: flex-start;
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-icon-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+    }
+    .activity-icon-dot.post { background: var(--signal-soft); color: var(--signal); }
+    .activity-icon-dot.prospect { background: rgba(16,185,129,0.08); color: var(--verify); }
+    .activity-icon-dot.alert { background: rgba(245,158,11,0.08); color: var(--alert); }
+    .activity-body { flex: 1; min-width: 0; }
+    .activity-title {
+      font-weight: 500;
+      font-size: 13px;
+      color: var(--bone);
+      margin-bottom: 2px;
+    }
+    .activity-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .activity-time {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── Prospects Table ─────────────────────── */
+    .prospect-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .prospect-table th {
+      text-align: left;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--stroke);
+    }
+    .prospect-table td {
+      padding: 10px 10px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .prospect-table .prospect-name { color: var(--bone); font-weight: 500; }
+    .prospect-table .prospect-org { color: var(--muted-light); }
+    .prospect-table .prospect-stage {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+    .stage-demo { background: rgba(59,130,246,0.1); color: var(--signal); }
+    .stage-negotiation { background: rgba(245,158,11,0.1); color: var(--alert); }
+    .stage-pilot { background: rgba(16,185,129,0.1); color: var(--verify); }
+    .stage-lead { background: rgba(100,116,139,0.1); color: var(--muted-light); }
+
+    /* ── Log Console ─────────────────────────── */
+    .log-console {
+      background: var(--ink);
+      border: 1px solid var(--stroke-light);
+      border-radius: 6px;
+      padding: 14px 18px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      max-height: 220px;
+      overflow-y: auto;
+      margin-top: 16px;
+    }
+    .log-console::-webkit-scrollbar { width: 4px; }
+    .log-console::-webkit-scrollbar-track { background: transparent; }
+    .log-console::-webkit-scrollbar-thumb { background: var(--stroke-light); border-radius: 2px; }
+    .log-line {
+      padding: 3px 0;
+    }
+    .log-ts { color: #FBBF24; }
+    .log-level-info { color: var(--signal); }
+    .log-level-ok { color: var(--verify); }
+    .log-msg { color: var(--muted-light); }
+    .log-hash { color: rgba(100,116,139,0.5); }
+
+    /* ── Alerts banner ───────────────────────── */
+    .alert-banner {
+      background: rgba(245,158,11,0.06);
+      border: 1px solid rgba(245,158,11,0.18);
+      border-radius: 6px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+    .alert-banner .alert-icon { font-size: 18px; flex-shrink: 0; }
+    .alert-banner .alert-text { color: var(--alert); font-weight: 500; }
+    .alert-banner .alert-detail { color: var(--muted-light); font-size: 12px; margin-left: 8px; }
+
+    /* ── Footer strip ────────────────────────── */
+    .footer-strip {
+      padding: 16px 28px;
+      border-top: 1px solid var(--stroke);
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-strip code {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px;
+      color: var(--muted-light);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Top Bar ──────────────────────────────── -->
+<header class="topbar">
+  <div class="topbar-brand">
+    ORQUOR<span class="dot">·</span>Internal
+    <span class="topbar-badge">admin</span>
+  </div>
+  <div class="topbar-meta">
+    <span><span class="live-dot"></span>Live</span>
+    <span id="clock" class="refresh-tag">--</span>
+    <span class="refresh-tag" id="countdown">Refresh in 30s</span>
+  </div>
+</header>
+
+<!-- ── Dashboard ────────────────────────────── -->
+<main class="dashboard">
+
+  <!-- Alert banner (dynamic) -->
+  <div class="alert-banner" id="alertBanner" style="display:none;">
+    <span class="alert-icon">⚠️</span>
+    <span class="alert-text" id="alertText">--</span>
+    <span class="alert-detail" id="alertDetail">--</span>
+  </div>
+
+  <div class="grid-main">
+
+    <!-- COLUMN 1 -->
+    <div>
+      <!-- ── System Status ──────────────────────── -->
+      <div class="panel" style="margin-bottom:20px;">
+        <div class="panel-header">
+          <div>
+            <span class="panel-icon">⎔</span>
+            <span class="section-title">System Status</span>
+          </div>
+          <span class="section-sub">Cluster · us-east-1</span>
+        </div>
+        <div class="sys-grid">
+          <div class="sys-card">
+            <div class="sys-icon">🖥️</div>
+            <div class="sys-value" id="gpuPct">78%</div>
+            <div class="sys-label">GPU Util</div>
+            <div class="sys-bar-bg"><div class="sys-bar-fill warn" id="gpuBar" style="width:78%;"></div></div>
+          </div>
+          <div class="sys-card">
+            <div class="sys-icon">🧠</div>
+            <div class="sys-value" id="ramVal">62.3 GB</div>
+            <div class="sys-label">RAM</div>
+            <div class="sys-bar-bg"><div class="sys-bar-fill good" id="ramBar" style="width:62%;"></div></div>
+          </div>
+          <div class="sys-card">
+            <div class="sys-icon">⏱️</div>
+            <div class="sys-value" id="uptimeVal">14d 7h</div>
+            <div class="sys-label">Uptime</div>
+          </div>
+          <div class="sys-card">
+            <div class="sys-icon">👤</div>
+            <div class="sys-value" id="sessionsVal">23</div>
+            <div class="sys-label">Active Sessions</div>
+          </div>
+        </div>
+        <div style="margin-top:18px;">
+          <div class="section-title" style="font-size:13px; margin-bottom:8px;">Cluster Nodes</div>
+          <div class="node-row"><span class="node-name">orq-gpu-a1</span><span class="node-status"><span class="node-dot online"></span>A100 · 78%</span></div>
+          <div class="node-row"><span class="node-name">orq-gpu-a2</span><span class="node-status"><span class="node-dot online"></span>A100 · 64%</span></div>
+          <div class="node-row"><span class="node-name">orq-cpu-w1</span><span class="node-status"><span class="node-dot online"></span>Worker · 31%</span></div>
+          <div class="node-row"><span class="node-name">orq-cpu-w2</span><span class="node-status"><span class="node-dot warn"></span>Worker · 89%</span></div>
+          <div class="node-row"><span class="node-name">orq-db-primary</span><span class="node-status"><span class="node-dot online"></span>PG · 42%</span></div>
+        </div>
+      </div>
+
+      <!-- ── Verifier Metrics ──────────────────── -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <span class="panel-icon">✓</span>
+            <span class="section-title">Verifier Metrics</span>
+          </div>
+          <span class="section-sub">Last 24h</span>
+        </div>
+        <div class="verifier-grid">
+          <div class="verifier-big-num">
+            <div class="big pass" id="totalPass">1,847</div>
+            <div class="lbl">Total Passes</div>
+          </div>
+          <div class="verifier-big-num">
+            <div class="big fail" id="totalFail">23</div>
+            <div class="lbl">Total Failures</div>
+          </div>
+          <div class="verifier-big-num">
+            <div class="big warn" id="avgLatency">312ms</div>
+            <div class="lbl">Avg Latency</div>
+          </div>
+          <div class="verifier-big-num">
+            <div class="big pass" id="passRate">98.8%</div>
+            <div class="lbl">Pass Rate</div>
+          </div>
+        </div>
+
+        <table class="verify-table">
+          <thead>
+            <tr><th>Verifier</th><th>Category</th><th>PASS</th><th>FAIL</th><th>Rate</th><th></th></tr>
+          </thead>
+          <tbody id="verifyTableBody">
+            <!-- populated by JS -->
+          </tbody>
+        </table>
+
+        <div class="log-console" id="logConsole">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMN 2 -->
+    <div>
+      <!-- ── Activity Feed ─────────────────────── -->
+      <div class="panel" style="margin-bottom:20px;">
+        <div class="panel-header">
+          <div>
+            <span class="panel-icon">✦</span>
+            <span class="section-title">Recent Activity</span>
+          </div>
+          <span class="section-sub">Last 24h</span>
+        </div>
+        <div class="activity-feed" id="activityFeed">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <!-- ── Active Prospects ──────────────────── -->
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <span class="panel-icon">⚑</span>
+            <span class="section-title">Active Prospects</span>
+          </div>
+          <span class="section-sub">Pipeline</span>
+        </div>
+        <table class="prospect-table">
+          <thead>
+            <tr><th>Organization</th><th>Contact</th><th>Stage</th><th>Last Touch</th></tr>
+          </thead>
+          <tbody id="prospectTableBody">
+            <!-- populated by JS -->
+          </tbody>
+        </table>
+        <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--stroke); display:flex; justify-content:space-between; font-size:12px;">
+          <span style="color:var(--muted);">Pipeline value</span>
+          <span style="font-family:'JetBrains Mono',monospace; color:var(--bone); font-weight:500;">$380K ARR est.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ── Footer ────────────────────────────────── -->
+<footer class="footer-strip">
+  <span>ORQUOR Internal Dashboard · Authorized personnel only · Session <code id="sessionId">sess_8f3a</code></span>
+  <span>Version <code>v2.1.4-beta</code> · Built by Nous Research</span>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+// ORQUOR Internal Dashboard — Simulated Data
+// Auto-refresh every 30 seconds
+// ═══════════════════════════════════════════════
+
+const REFRESH_INTERVAL = 30000; // 30 seconds
+let countdownSec = 30;
+let ticker = null;
+
+// ── Simulated data generators ──────────────────
+
+function rand(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function randFloat(min, max, decimals = 1) {
+  return (Math.random() * (max - min) + min).toFixed(decimals);
+}
+
+function timeAgo(hoursAgo) {
+  // Simulated relative times
+  const units = [
+    { label: 'min', max: 60 },
+    { label: 'h', max: 24 },
+    { label: 'h', max: 24 } // we'll keep some in hours
+  ];
+  if (hoursAgo < 1) {
+    return rand(1, 55) + ' min ago';
+  }
+  if (hoursAgo < 24) {
+    return Math.floor(hoursAgo) + 'h ago';
+  }
+  return Math.floor(hoursAgo / 24) + 'd ago';
+}
+
+// ── System status simulation ───────────────────
+
+function updateSystemStatus() {
+  const gpuPct = rand(72, 88);
+  const ramUsed = randFloat(58, 66, 1);
+  const ramTotal = 100;
+  const uptimeDays = 14 + rand(0, 1);
+  const uptimeHours = rand(0, 23);
+  const sessions = rand(19, 32);
+
+  document.getElementById('gpuPct').textContent = gpuPct + '%';
+  document.getElementById('gpuBar').style.width = gpuPct + '%';
+  document.getElementById('ramVal').textContent = ramUsed + ' GB';
+  document.getElementById('ramBar').style.width = ((parseFloat(ramUsed) / ramTotal) * 100).toFixed(0) + '%';
+  document.getElementById('uptimeVal').textContent = uptimeDays + 'd ' + uptimeHours + 'h';
+  document.getElementById('sessionsVal').textContent = sessions;
+}
+
+// ── Verifier data ──────────────────────────────
+
+const VERIFIER_NAMES = [
+  { id: 'V1', name: 'Dosage Preserver', cat: 'Clinical' },
+  { id: 'V2', name: 'Unit Matcher', cat: 'Clinical' },
+  { id: 'V3', name: 'Substance Tracker', cat: 'Pharma' },
+  { id: 'V4', name: 'Exclusion Guard', cat: 'Privacy' },
+  { id: 'V5', name: 'Register Validator', cat: 'Linguistic' },
+  { id: 'V6', name: 'Temporal Aligner', cat: 'Clinical' },
+  { id: 'V7', name: 'Negation Detector', cat: 'Linguistic' },
+  { id: 'V8', name: 'Language Purity', cat: 'Linguistic' },
+  { id: 'V9', name: 'Sentiment Guard', cat: 'Safety' },
+  { id: 'V10', name: 'Entity Linker', cat: 'Clinical' },
+  { id: 'V11', name: 'ICD-10 Mapper', cat: 'Coding' },
+  { id: 'V12', name: 'Allergy Cross-Check', cat: 'Safety' },
+  { id: 'V13', name: 'Informed Consent', cat: 'Legal' },
+];
+
+function updateVerifiers() {
+  const tbody = document.getElementById('verifyTableBody');
+  let totalPass = 0;
+  let totalFail = 0;
+  let rows = '';
+
+  VERIFIER_NAMES.forEach((v, i) => {
+    const pass = rand(120, 180);
+    const fail = rand(0, 5);
+    totalPass += pass;
+    totalFail += fail;
+    const rate = ((pass / (pass + fail)) * 100).toFixed(1);
+    const rateClass = parseFloat(rate) >= 99 ? 'v-pass' : 'v-fail';
+    const barWarn = parseFloat(rate) < 99;
+
+    rows += `<tr>
+      <td class="v-name">${v.id} ${v.name}</td>
+      <td style="color:var(--muted-light);">${v.cat}</td>
+      <td class="v-pass">${pass}</td>
+      <td class="v-fail">${fail}</td>
+      <td class="${rateClass}">${rate}%</td>
+      <td><div class="pass-bar"><div class="fill${barWarn ? ' warn' : ''}" style="width:${rate}%;"></div></div></td>
+    </tr>`;
+  });
+
+  tbody.innerHTML = rows;
+  document.getElementById('totalPass').textContent = totalPass.toLocaleString();
+  document.getElementById('totalFail').textContent = totalFail;
+  document.getElementById('avgLatency').textContent = rand(280, 380) + 'ms';
+  document.getElementById('passRate').textContent = ((totalPass / (totalPass + totalFail)) * 100).toFixed(1) + '%';
+
+  // Alert banner logic
+  const alertBanner = document.getElementById('alertBanner');
+  if (totalFail > 30) {
+    alertBanner.style.display = 'flex';
+    document.getElementById('alertText').textContent = 'Elevated verifier failure rate detected';
+    document.getElementById('alertDetail').textContent = totalFail + ' failures in last 24h — threshold: 30';
+  } else if (totalFail > 15) {
+    alertBanner.style.display = 'flex';
+    document.getElementById('alertText').textContent = 'Verifier failures approaching threshold';
+    document.getElementById('alertDetail').textContent = totalFail + ' failures in last 24h — monitor closely';
+  } else {
+    alertBanner.style.display = 'none';
+  }
+}
+
+// ── Log console ────────────────────────────────
+
+function updateLogConsole() {
+  const logLines = [
+    { ts: '2026-05-24T16:58:0' + rand(1, 9) + 'Z', level: 'info', msg: 'Translation session started', hash: '0x' + rand(1000, 9999).toString(16) },
+    { ts: '2026-05-24T16:57:3' + rand(0, 9) + 'Z', level: 'ok', msg: 'Verifier V1-V13 batch: all PASS', hash: '0x' + rand(1000, 9999).toString(16) },
+    { ts: '2026-05-24T16:56:1' + rand(0, 9) + 'Z', level: 'info', msg: 'RFC 3161 timestamp recorded', hash: '0x' + rand(1000, 9999).toString(16) },
+    { ts: '2026-05-24T16:55:4' + rand(0, 9) + 'Z', level: 'ok', msg: 'Audit trail committed to ledger', hash: '0x' + rand(1000, 9999).toString(16) },
+    { ts: '2026-05-24T16:54:0' + rand(1, 9) + 'Z', level: 'info', msg: 'GPU warm-up complete on orq-gpu-a1', hash: '0x' + rand(1000, 9999).toString(16) },
+    { ts: '2026-05-24T16:53:2' + rand(0, 9) + 'Z', level: 'ok', msg: 'Health check: all nodes responsive', hash: '0x' + rand(1000, 9999).toString(16) },
+  ];
+
+  const console = document.getElementById('logConsole');
+  console.innerHTML = logLines.map(l => {
+    const levelClass = l.level === 'ok' ? 'log-level-ok' : 'log-level-info';
+    return `<div class="log-line">
+      <span class="log-ts">${l.ts}</span>
+      <span class="${levelClass}">[${l.level.toUpperCase()}]</span>
+      <span class="log-msg">${l.msg}</span>
+      <span class="log-hash">${l.hash}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── Activity feed ──────────────────────────────
+
+const ACTIVITY_TEMPLATES = [
+  { type: 'post', icon: 'P', iconClass: 'post', title: 'New clinical trial post published', sub: 'Phase II results: translation accuracy 99.2% across 12 languages' },
+  { type: 'post', icon: 'P', iconClass: 'post', title: 'Blog: "Why verifier chains matter in healthcare AI"', sub: 'Published on ORQUOR Engineering Blog · 1.2K views' },
+  { type: 'post', icon: 'P', iconClass: 'post', title: 'Whitepaper update: v2.1 methodology', sub: 'New section on adversarial verifier training added' },
+  { type: 'prospect', icon: 'B', iconClass: 'prospect', title: 'Mayo Clinic — demo completed', sub: 'Clinical lead requested pilot pricing for 3 departments' },
+  { type: 'prospect', icon: 'B', iconClass: 'prospect', title: 'Hospital Italiano (Buenos Aires) — follow-up', sub: 'Interested in ES↔EN emergency room deployment' },
+  { type: 'prospect', icon: 'B', iconClass: 'prospect', title: 'Charité Berlin — initial contact', sub: 'Exploring DE↔EN↔TR clinical workflows' },
+  { type: 'alert', icon: '!', iconClass: 'alert', title: 'Verifier V9 sentiment threshold breach', sub: '1 utterance flagged for review — clinical override required' },
+  { type: 'post', icon: 'P', iconClass: 'post', title: 'ORQUOR at HIMSS 2026 — talk accepted', sub: 'Session: "Verified AI translation in critical care"' },
+  { type: 'prospect', icon: 'B', iconClass: 'prospect', title: 'Saudi German Hospital — proposal sent', sub: 'AR↔EN multi-verifier pipeline for outpatient clinics' },
+];
+
+function updateActivityFeed() {
+  // Shuffle and pick 6
+  const shuffled = [...ACTIVITY_TEMPLATES].sort(() => Math.random() - 0.5).slice(0, 6);
+  const feed = document.getElementById('activityFeed');
+  feed.innerHTML = shuffled.map((item, i) => {
+    const time = timeAgo(i * 0.5 + Math.random() * 3);
+    return `<div class="activity-item">
+      <div class="activity-icon-dot ${item.iconClass}">${item.icon}</div>
+      <div class="activity-body">
+        <div class="activity-title">${item.title}</div>
+        <div class="activity-sub">${item.sub}</div>
+      </div>
+      <div class="activity-time">${time}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Prospects table ────────────────────────────
+
+const PROSPECT_DATA = [
+  { org: 'Mayo Clinic', contact: 'Sarah Chen, MD', stage: 'demo', stageLabel: 'Demo Done', lastTouch: '2h ago' },
+  { org: 'Hospital Italiano', contact: 'Dr. M. Rodriguez', stage: 'negotiation', stageLabel: 'Negotiation', lastTouch: '6h ago' },
+  { org: 'Charité Berlin', contact: 'Prof. K. Weber', stage: 'lead', stageLabel: 'Lead', lastTouch: '1d ago' },
+  { org: 'Cleveland Clinic', contact: 'James Park, CIO', stage: 'pilot', stageLabel: 'Pilot Active', lastTouch: '30min ago' },
+  { org: 'Saudi German Hospital', contact: 'A. Al-Rashid', stage: 'demo', stageLabel: 'Demo Done', lastTouch: '4h ago' },
+  { org: 'Apollo Hospitals', contact: 'Dr. Priya Nair', stage: 'lead', stageLabel: 'Lead', lastTouch: '2d ago' },
+  { org: 'Instituto Nacional de Salud', contact: 'L. Mendoza', stage: 'pilot', stageLabel: 'Pilot Active', lastTouch: '8h ago' },
+];
+
+function updateProspects() {
+  const tbody = document.getElementById('prospectTableBody');
+  // Slight shuffle to simulate change
+  const shuffled = [...PROSPECT_DATA].sort(() => Math.random() - 0.5);
+  tbody.innerHTML = shuffled.map(p => {
+    return `<tr>
+      <td class="prospect-name">${p.org}</td>
+      <td class="prospect-org">${p.contact}</td>
+      <td><span class="prospect-stage stage-${p.stage}">${p.stageLabel}</span></td>
+      <td style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted);">${p.lastTouch}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Clock & countdown ──────────────────────────
+
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
+}
+
+function startCountdown() {
+  countdownSec = 30;
+  document.getElementById('countdown').textContent = 'Refresh in ' + countdownSec + 's';
+  if (ticker) clearInterval(ticker);
+  ticker = setInterval(() => {
+    countdownSec--;
+    document.getElementById('countdown').textContent = 'Refresh in ' + countdownSec + 's';
+    if (countdownSec <= 0) {
+      clearInterval(ticker);
+      refreshAll();
+      startCountdown();
+    }
+  }, 1000);
+}
+
+// ── Refresh all ────────────────────────────────
+
+function refreshAll() {
+  updateClock();
+  updateSystemStatus();
+  updateVerifiers();
+  updateLogConsole();
+  updateActivityFeed();
+  updateProspects();
+  document.getElementById('sessionId').textContent = 'sess_' + rand(1000, 9999).toString(16);
+}
+
+// ── Init ───────────────────────────────────────
+
+refreshAll();
+startCountdown();
+</script>
+
+</body>
+</html>
