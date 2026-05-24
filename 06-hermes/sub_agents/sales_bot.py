@@ -120,6 +120,164 @@ def next_action_for(asset: Asset) -> str:
     return "Reactivation: low-pressure value-share, no expectation."
 
 
+# ---------------------------------------------------------------------------
+# Prospect scoring
+# ---------------------------------------------------------------------------
+
+# Weight configuration for the multi-factor scoring model.
+# Tune these as the pipeline matures.  Sum of weights = 1.0.
+SCORING_WEIGHTS = {
+    "stage": 0.25,
+    "recency": 0.30,
+    "role_seniority": 0.20,
+    "org_relevance": 0.15,
+    "country_fit": 0.10,
+}
+
+# Role seniority tiers (higher = more decision power).
+ROLE_SENIORITY_MAP: dict[str, float] = {
+    "ceo": 1.0,
+    "cfo": 0.95,
+    "coo": 0.95,
+    "chief": 0.95,
+    "director": 0.80,
+    "vp": 0.85,
+    "head": 0.75,
+    "manager": 0.55,
+    "specialist": 0.40,
+    "analyst": 0.30,
+    "coordinator": 0.35,
+}
+
+# Organisational relevance keywords — healthcare, insurance, gov.
+ORG_RELEVANCE_KEYWORDS: list[str] = [
+    "hospital", "clinic", "clinica", "medical", "health", "salud",
+    "insurance", "seguro", "pharma", "farmac", "biotech", "research",
+    "foundation", "fundacion", "ministry", "ministerio", "public health",
+    "sanidad", "caja", "eps", "ips", "imss",
+]
+
+# Target countries for LATAM expansion, with fit scores.
+COUNTRY_FIT_MAP: dict[str, float] = {
+    "costa rica": 1.0,
+    "colombia": 0.95,
+    "panama": 0.90,
+    "mexico": 0.85,
+    "chile": 0.80,
+    "peru": 0.75,
+    "argentina": 0.70,
+    "ecuador": 0.70,
+    "guatemala": 0.65,
+    "dominican republic": 0.60,
+}
+
+
+def _stage_score(stage: CultivationStage) -> float:
+    """Score based on cultivation stage — further along = higher intent."""
+    stage_order: dict[CultivationStage, float] = {
+        CultivationStage.PROFILED: 0.10,
+        CultivationStage.ENGAGED: 0.30,
+        CultivationStage.SIGNALED: 0.55,
+        CultivationStage.CONVERSING: 0.75,
+        CultivationStage.MEETING: 0.90,
+        CultivationStage.PILOT: 0.95,
+        CultivationStage.PAYING: 1.00,
+        CultivationStage.INACTIVE: 0.05,
+    }
+    return stage_order.get(stage, 0.0)
+
+
+def _recency_score(last_signal: datetime | None) -> float:
+    """Score how recently the asset signalled.  Fresher = hotter.
+
+    Decay curve: 1.0 if < 3 days, 0.9 at 7 days, 0.5 at 30 days,
+    0.0 at 90+ days or no signal.
+    """
+    if last_signal is None:
+        return 0.0
+    age_days = (datetime.now(timezone.utc) - last_signal).days
+    if age_days < 0:
+        return 1.0  # future-dated? treat as fresh.
+    if age_days <= 3:
+        return 1.0
+    if age_days <= 7:
+        return 0.90
+    if age_days <= 14:
+        return 0.75
+    if age_days <= 30:
+        return 0.50
+    if age_days <= 60:
+        return 0.25
+    if age_days <= 90:
+        return 0.10
+    return 0.0
+
+
+def _role_seniority_score(role: str) -> float:
+    """Match role string against seniority tiers (case-insensitive substring)."""
+    role_lower = role.lower()
+    best = 0.30  # default for unrecognised roles
+    for keyword, score in ROLE_SENIORITY_MAP.items():
+        if keyword in role_lower:
+            best = max(best, score)
+    return best
+
+
+def _org_relevance_score(organization: str) -> float:
+    """Score organisational relevance based on healthcare/LATAM keywords."""
+    org_lower = organization.lower()
+    hits = sum(1 for kw in ORG_RELEVANCE_KEYWORDS if kw in org_lower)
+    # 1 hit = 0.5, 2 hits = 0.75, 3+ = 1.0
+    if hits >= 3:
+        return 1.0
+    if hits == 2:
+        return 0.75
+    if hits == 1:
+        return 0.50
+    return 0.20  # unknown but still in CRM
+
+
+def _country_fit_score(country: str) -> float:
+    """Score geo-priority.  LATAM target countries get higher scores."""
+    return COUNTRY_FIT_MAP.get(country.lower(), 0.30)
+
+
+def score_prospect(asset: Asset) -> float:
+    """Compute a composite prospect score (0.0–1.0) across five dimensions.
+
+    Dimensions:
+        - **stage**: How far along the cultivation pipeline the asset is.
+        - **recency**: Days since last signal from the asset (decay curve).
+        - **role_seniority**: Decision-making power inferred from job title.
+        - **org_relevance**: How closely the organisation matches Orquor's ICP.
+        - **country_fit**: Priority of the asset's country in LATAM expansion.
+
+    Returns a weighted sum using ``SCORING_WEIGHTS``.
+    """
+    scores = {
+        "stage": _stage_score(asset.stage),
+        "recency": _recency_score(asset.last_signal_from_asset),
+        "role_seniority": _role_seniority_score(asset.role),
+        "org_relevance": _org_relevance_score(asset.organization),
+        "country_fit": _country_fit_score(asset.country),
+    }
+    composite = sum(
+        SCORING_WEIGHTS[dim] * scores[dim] for dim in SCORING_WEIGHTS
+    )
+    return round(composite, 4)
+
+
+def rank_prospects(assets: list[Asset]) -> list[tuple[Asset, float]]:
+    """Return prospects sorted by composite score (highest first).
+
+    Each element is ``(asset, score)``.  Use this to prioritise founder
+    time and outbound sequencing.
+    """
+    scored = [(a, score_prospect(a)) for a in assets]
+    scored.sort(key=lambda pair: pair[1], reverse=True)
+    return scored
+
+
 def verifier_check(assets: list[Asset]) -> tuple[bool, str]:
     """Verify cultivation discipline."""
     if not assets:
@@ -159,9 +317,18 @@ async def run(memory: SharedMemory, dry_run: bool = False, **_: Any) -> dict:
     for a in assets:
         by_stage[a.stage.value] = by_stage.get(a.stage.value, 0) + 1
 
+    # --- Prospect scoring & ranking ---
+    ranked = rank_prospects(assets)
+    top_prospects = [
+        {"asset_id": a.asset_id, "name": a.name, "score": s, "stage": a.stage.value}
+        for a, s in ranked
+    ]
+
     return {
         "summary": f"assets={len(assets)} " + " ".join(f"{k}={v}" for k, v in by_stage.items()),
         "verifier": verifier_msg,
         "verifier_passed": verifier_passed,
         "next_actions": actions,
+        "prospect_scores": {a.asset_id: score_prospect(a) for a in assets},
+        "top_prospects": top_prospects,
     }

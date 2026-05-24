@@ -78,6 +78,193 @@ def mock_content_pipeline(dry_run: bool) -> list[ContentItem]:
     ]
 
 
+# ---------------------------------------------------------------------------
+# Optimal posting schedule engine
+# ---------------------------------------------------------------------------
+
+# Optimal posting hours (UTC) per channel per day-of-week.
+# Based on B2B healthcare audience engagement data (LATAM timezone adjusted).
+# Format: channel -> day-of-week (0=Mon..6=Sun) -> list of preferred hours (UTC)
+OPTIMAL_POSTING_SLOTS: dict[str, dict[int, list[int]]] = {
+    "linkedin": {
+        0: [12, 15, 17],   # Mon: lunch, mid-afternoon, end-of-day
+        1: [12, 14, 16],   # Tue
+        2: [11, 13, 15],   # Wed
+        3: [12, 14, 17],   # Thu
+        4: [11, 13],       # Fri (early cutoff)
+        5: [10, 12],       # Sat (light)
+        6: [14],           # Sun (minimal — long-form only)
+    },
+    "x": {
+        0: [12, 15, 18, 21],  # Mon: higher frequency
+        1: [12, 14, 17, 20],
+        2: [11, 13, 16, 19],
+        3: [12, 14, 17, 20],
+        4: [11, 13, 15],
+        5: [10, 14],
+        6: [15],
+    },
+    "youtube": {
+        # YouTube long-form: fewer slots, morning/early afternoon
+        0: [13],
+        1: [14],
+        2: [14],
+        3: [13],
+        4: [12],
+        5: [11],
+        6: [15],
+    },
+    "newsletter": {
+        # Newsletters: mid-week mornings
+        1: [13],   # Tue
+        2: [13],   # Wed
+        3: [13],   # Thu
+    },
+    "tiktok": {
+        0: [14, 19],
+        1: [14, 18],
+        2: [14, 19],
+        3: [14, 18],
+        4: [13, 17],
+        5: [12, 16],
+        6: [15],
+    },
+}
+
+# Minimum gap (hours) between posts on the same channel.
+MIN_POST_GAP_HOURS: dict[str, int] = {
+    "linkedin": 6,
+    "x": 3,
+    "youtube": 24,
+    "newsletter": 24,
+    "tiktok": 8,
+}
+
+
+def _find_optimal_slot(
+    channel: str,
+    preferred_date: datetime,
+    occupied_slots: list[datetime],
+) -> datetime:
+    """Find the best available time slot for a channel on/near a target date.
+
+    Scans ``OPTIMAL_POSTING_SLOTS`` for the channel's preferred hours on
+    that day-of-week.  If all are taken (or too close to existing posts),
+    shifts to the next available day.
+
+    Args:
+        channel: Content channel name (``"linkedin"``, ``"x"``, etc.).
+        preferred_date: The target publication date (naive or aware).
+        occupied_slots: Already-assigned post datetimes on this channel.
+
+    Returns:
+        A ``datetime`` with the best available slot assigned.
+    """
+    min_gap = MIN_POST_GAP_HOURS.get(channel, 4)
+    gap_td = timedelta(hours=min_gap)
+    day_slots = OPTIMAL_POSTING_SLOTS.get(channel, {})
+
+    # Try up to 7 days forward
+    for offset in range(7):
+        candidate_date = preferred_date + timedelta(days=offset)
+        dow = candidate_date.weekday()
+        hours = day_slots.get(dow, [12])  # default noon if no config
+
+        for hour in sorted(hours):
+            slot = candidate_date.replace(
+                hour=hour, minute=0, second=0, microsecond=0
+            )
+            # Check gap constraint against already-occupied slots
+            conflict = any(
+                abs((slot - occ).total_seconds()) < gap_td.total_seconds()
+                for occ in occupied_slots
+            )
+            if not conflict:
+                return slot
+
+    # Fallback: return preferred_date at noon
+    return preferred_date.replace(hour=12, minute=0, second=0, microsecond=0)
+
+
+def schedule_posts(
+    items: list[ContentItem],
+    start_date: datetime | None = None,
+) -> list[ContentItem]:
+    """Assign optimal posting times to a batch of content items.
+
+    Items in ``"drafted"`` or ``"human_review"`` status get scheduled.
+    Already-scheduled or published items are left unchanged.
+
+    The scheduler respects:
+        - Per-channel optimal time-of-day / day-of-week slots.
+        - Minimum gap between posts on the same channel.
+        - Sequential assignment: items are processed in list order.
+
+    Args:
+        items: Content items to schedule.
+        start_date: Earliest date to schedule from (default: now + 1 hour).
+
+    Returns:
+        New list of ``ContentItem`` with ``scheduled_for`` populated.
+    """
+    if start_date is None:
+        start_date = datetime.now(timezone.utc) + timedelta(hours=1)
+
+    # Track occupied slots per channel
+    occupied: dict[str, list[datetime]] = {}
+    result: list[ContentItem] = []
+
+    for item in items:
+        if item.status in ("scheduled", "published"):
+            result.append(item)
+            continue
+
+        channel = item.channel
+        if channel not in occupied:
+            occupied[channel] = []
+
+        slot = _find_optimal_slot(channel, start_date, occupied[channel])
+        occupied[channel].append(slot)
+
+        result.append(ContentItem(
+            asset_id=item.asset_id,
+            channel=item.channel,
+            title=item.title,
+            body_draft=item.body_draft,
+            status="scheduled",
+            scheduled_for=slot,
+            source_artifact=item.source_artifact,
+        ))
+
+    return result
+
+
+def generate_content_calendar(
+    items: list[ContentItem],
+) -> list[dict[str, Any]]:
+    """Produce a human-readable calendar view of scheduled content.
+
+    Returns a list of dicts sorted by scheduled date, with fields:
+    ``date``, ``day``, ``channel``, ``asset_id``, ``title``.
+    """
+    scheduled = [it for it in items if it.scheduled_for is not None]
+    scheduled.sort(key=lambda it: it.scheduled_for)  # type: ignore[arg-type]
+
+    day_names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    calendar: list[dict[str, Any]] = []
+    for it in scheduled:
+        assert it.scheduled_for is not None
+        calendar.append({
+            "date": it.scheduled_for.strftime("%Y-%m-%d"),
+            "day": day_names[it.scheduled_for.weekday()],
+            "time_utc": it.scheduled_for.strftime("%H:%M"),
+            "channel": it.channel,
+            "asset_id": it.asset_id,
+            "title": it.title,
+        })
+    return calendar
+
+
 def verifier_check(items: list[ContentItem]) -> tuple[bool, str]:
     """
     Pass conditions:
@@ -114,6 +301,10 @@ async def run(memory: SharedMemory, dry_run: bool = False, **_: Any) -> dict:
             reasoning="Mandatory human review before publish.",
         )
 
+    # --- Scheduling engine ---
+    scheduled_items = schedule_posts(items)
+    calendar = generate_content_calendar(scheduled_items)
+
     return {
         "summary": (
             f"items={len(items)} "
@@ -123,4 +314,9 @@ async def run(memory: SharedMemory, dry_run: bool = False, **_: Any) -> dict:
         "verifier": verifier_msg,
         "verifier_passed": verifier_passed,
         "needs_human_review": [it.asset_id for it in needs_review],
+        "scheduled_items": [
+            {"asset_id": it.asset_id, "channel": it.channel, "scheduled_for": it.scheduled_for.isoformat() if it.scheduled_for else None}
+            for it in scheduled_items
+        ],
+        "calendar": calendar,
     }
