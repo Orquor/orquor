@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Orquor · Pre-seed deck</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #0B0F14;
+    --bone: #F4F1EB;
+    --signal: #3B82F6;
+    --verify: #10B981;
+    --muted: #64748B;
+    --stroke: #1E293B;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #06090D; color: var(--bone); font-family: "Inter", sans-serif; }
+  .deck { display: flex; flex-direction: column; gap: 4px; padding: 40px 20px; }
+  .slide { background: var(--ink); border: 1px solid var(--stroke); border-radius: 4px; padding: 64px; min-height: 540px; max-width: 1100px; margin: 0 auto; width: 100%; position: relative; display: flex; flex-direction: column; }
+  .slide .num { position: absolute; top: 24px; right: 32px; font-family: "JetBrains Mono", monospace; font-size: 12px; color: var(--muted); }
+  .slide .brand { position: absolute; top: 24px; left: 32px; font-family: "Inter Tight"; font-weight: 700; font-size: 18px; letter-spacing: -0.02em; }
+  .slide .brand .dot { color: var(--signal); }
+  h1 { font-family: "Inter Tight"; font-weight: 700; font-size: 64px; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 24px; }
+  h2 { font-family: "Inter Tight"; font-weight: 700; font-size: 36px; letter-spacing: -0.02em; margin-bottom: 32px; }
+  p { font-size: 18px; line-height: 1.6; color: rgba(244,241,235,0.84); max-width: 800px; margin-bottom: 16px; }
+  .big { font-family: "Inter Tight"; font-size: 96px; font-weight: 700; letter-spacing: -0.04em; }
+  .grid { display: grid; gap: 24px; }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .card { padding: 24px; border: 1px solid var(--stroke); border-radius: 4px; }
+  .card h3 { font-family: "Inter Tight"; font-size: 18px; margin-bottom: 8px; }
+  .card p { font-size: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 16px; }
+  th { text-align: left; padding: 12px 16px; color: var(--muted); border-bottom: 1px solid var(--stroke); text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--stroke); }
+  td.s { color: var(--signal); font-weight: 500; }
+  td.v { color: var(--verify); font-weight: 500; }
+  code { font-family: "JetBrains Mono"; background: rgba(59,130,246,0.12); color: var(--signal); padding: 2px 8px; border-radius: 3px; font-size: 0.92em; }
+  .badge { display: inline-block; padding: 6px 14px; background: rgba(59,130,246,0.12); color: var(--signal); border-radius: 999px; font-size: 13px; margin-bottom: 24px; }
+  .signal-text { color: var(--signal); }
+  ul { list-style: none; padding: 0; }
+  ul li { padding: 10px 0; border-bottom: 1px solid var(--stroke); font-size: 16px; }
+  ul li:before { content: "→ "; color: var(--signal); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+<!-- Slide 1: Cover -->
+<div class="slide" style="justify-content: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">01 / 16</span>
+  <span class="badge">Pre-seed · 2026</span>
+  <h1>Orchestration<br/>you can audit.</h1>
+  <p style="font-size: 24px; color: rgba(244,241,235,0.7);">A new category of multi-agent AI for regulated industries. We start with healthcare interpretation.</p>
+  <p style="font-size: 14px; color: var(--muted); margin-top: auto;">Freddy [Apellido] · Founder · freddy@orquor.com · Lima, Peru</p>
+</div>
+
+<!-- Slide 2: The problem -->
+<div class="slide" style="justify-content: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">02 / 16</span>
+  <h2>The problem</h2>
+  <p style="font-size: 22px; line-height: 1.4; max-width: 900px;">In 2026, hospitals across Latin America and the United States cannot get medical interpretation that is <strong class="signal-text">fast enough, cheap enough, and defensible enough</strong> at the same time.</p>
+  <div class="grid grid-2" style="margin-top: 32px;">
+    <div class="card">
+      <h3>Human VRI / OPI</h3>
+      <p>LanguageLine, Cloudbreak, Stratus. Accurate but USD 1.50–2.50/min with 15–60s of latency. No usable audit log.</p>
+    </div>
+    <div class="card">
+      <h3>AI-only translation</h3>
+      <p>Wordly, DIY GPT wrappers. Fast and cheap but no audit trail. A hospital cannot defend a mistranslation in court.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 3: The market -->
+<div class="slide" style="justify-content: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">03 / 16</span>
+  <h2>Why now</h2>
+  <div class="grid grid-3" style="margin-top: 32px;">
+    <div class="card">
+      <span class="big" style="font-size: 52px; color: var(--signal);">USD 3.2B</span>
+      <p style="margin-top: 8px;">US medical interpretation market, growing 8% YoY (LSC 2024)</p>
+    </div>
+    <div class="card">
+      <span class="big" style="font-size: 52px; color: var(--signal);">62M</span>
+      <p style="margin-top: 8px;">Hispanic population in the US — primary unmet need population</p>
+    </div>
+    <div class="card">
+      <span class="big" style="font-size: 52px; color: var(--signal);">USD 6.5B</span>
+      <p style="margin-top: 8px;">LATAM medical tourism, growing 12% YoY (MTA 2025)</p>
+    </div>
+  </div>
+  <p style="margin-top: 32px; max-width: 900px;">Regulators are catching up. The FDA, the SBS (Peru), COFEPRIS (Mexico), and ANVISA (Brazil) are tightening their stance on AI in clinical settings. Every hospital that uses AI translation in the next 24 months will need to demonstrate auditability or stop using AI translation.</p>
+</div>
+
+<!-- Slide 4: Our category -->
+<div class="slide" style="justify-content: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">04 / 16</span>
+  <span class="badge">A new category</span>
+  <h2>Auditable Clinical Translation Orchestration</h2>
+  <p style="font-size: 22px;"><code>ACTO</code> — a verifier-backed orchestration layer that combines AI components with human specialists into a single auditable pipeline.</p>
+  <table>
+    <thead>
+      <tr><th>Axis</th><th>Human VRI</th><th>AI-only</th><th>Orquor (ACTO)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Latency p50</td><td>15–60s</td><td>1s</td><td class="v">0.9s</td></tr>
+      <tr><td>Cost / min</td><td>USD 2.00</td><td>USD 0.05</td><td class="v">USD 0.50</td></tr>
+      <tr><td>Audit log</td><td>Metadata</td><td>None</td><td class="v">Per-utterance, cryptographic</td></tr>
+      <tr><td>Med WER</td><td>1–3%</td><td>8–15%</td><td class="v">4.1%</td></tr>
+      <tr><td>Defensibility</td><td>Strong (human)</td><td>Weak</td><td class="v">Mathematically demonstrable</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Slide 5: Product -->
+<div class="slide" style="justify-content: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">05 / 16</span>
+  <h2>Orquor Clinical (in production)</h2>
+  <div class="grid grid-2">
+    <div>
+      <p>Real-time English ↔ Spanish medical interpretation deployed in hospitals and medical-tourism clinics across Latin America.</p>
+      <ul style="margin-top: 16px;">
+        <li>9 specialty registers: ER, OR, ICU, Pharmacy, Pediatrics, Psychiatry, Admissions, Legal, 911</li>
+        <li>3 linguistic registers: Formal/Clinical, Simplified, Legal</li>
+        <li>Per-utterance verifier suite (~60 weighted outcome-based tests)</li>
+        <li>Cryptographic audit log (RFC 3161 / OpenTimestamps)</li>
+        <li>NVIDIA H100 confidential computing mode (PHI never readable by operator)</li>
+      </ul>
+    </div>
+    <div class="card" style="background: rgba(59,130,246,0.06); border-color: rgba(59,130,246,0.3);">
+      <h3>Production metrics (preliminary, single site)</h3>
+      <p style="font-size: 14px;">Medical WER (ER): <strong>4.1%</strong> vs Whisper baseline 11.8%</p>
+      <p style="font-size: 14px;">COMET-22 clinical Spanish: <strong>0.87</strong></p>
+      <p style="font-size: 14px;">Latency p50: <strong>0.9s</strong> · p99: 2.4s</p>
+      <p style="font-size: 14px;">Verifier pass rate: <strong>94.2%</strong></p>
+      <p style="font-size: 14px;">Human escalation: <strong>5.8%</strong> of utterances</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 6: Wedge -->
+<div class="slide" style="justify-content: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">06 / 16</span>
+  <h2>Beachhead: medical tourism clinics in Costa Rica + Colombia</h2>
+  <div class="grid grid-3">
+    <div class="card">
+      <h3 style="color: var(--signal);">~180</h3>
+      <p>Target clinics in CR + CO with high US-patient flow</p>
+    </div>
+    <div class="card">
+      <h3 style="color: var(--signal);">USD 28k</h3>
+      <p>Annual contract value at launch pricing</p>
+    </div>
+    <div class="card">
+      <h3 style="color: var(--signal);">3.5–4.5 mo</h3>
+      <p>Sales cycle, single decision-maker (founder/CFO)</p>
+    </div>
+  </div>
+  <p style="margin-top: 32px;">We chose this beachhead because it is the only sub-segment that combines existing budget, single-decision-maker procurement, differentiated pain by quality (US-patient complaints over mistranslation), and internationally referenceable logos. Hospital networks come second (slower cycle, US health systems come fourth (HIPAA gating).</p>
+</div>
+
+<!-- Slide 7: Roadmap -->
+<div class="slide" style="justify-content: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">07 / 16</span>
+  <h2>Sequencing of products</h2>
+  <table>
+    <thead><tr><th>Phase</th><th>Product</th><th>Status</th><th>Path</th></tr></thead>
+    <tbody>
+      <tr><td>M0–M6</td><td>Orquor Clinical (medical tourism CR/CO)</td><td class="v">Production</td><td>Direct sales, 5 anchor customers</td></tr>
+      <tr><td>M3–M9</td><td>Orquor Telehealth API (B2B2B)</td><td class="s">Alpha M3</td><td>API to telehealth platforms, white-label</td></tr>
+      <tr><td>M6–M12</td><td>Orquor Triage (telehealth async)</td><td class="s">MVP M8</td><td>US-Latam telehealth providers</td></tr>
+      <tr><td>M9–M18</td><td>Orquor Court (US courts)</td><td>Discovery M9</td><td>Federal immigration courts pilot</td></tr>
+      <tr><td>M12–M24</td><td>Orquor Hermes (platform)</td><td>Q4 2026</td><td>Sell orchestration layer to other regulated SaaS</td></tr>
+      <tr><td>M18+</td><td>Orquor Mental Bridge, Orquor Pharmacy, Orquor 911</td><td>Roadmap</td><td>Adjacent verticals</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top: 24px; font-size: 15px; color: var(--muted);">Projected ARR mes 24: USD 1.9M consolidated across Clinical + Telehealth + Court.</p>
+</div>
+
+<!-- Slide 8: Team -->
+<div class="slide" style="justify-content: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">08 / 16</span>
+  <h2>Founder</h2>
+  <div class="grid grid-2">
+    <div>
+      <h3 style="font-family: 'Inter Tight'; font-size: 28px;">Freddy [Apellido]</h3>
+      <p style="color: var(--muted); font-size: 14px;">Founder · Engineering · LATAM go-to-market</p>
+      <p style="margin-top: 16px;">Senior AI Trainer with the most demanding agent-evaluation projects in the industry:</p>
+      <ul>
+        <li>OpenClaw Atlas (Outlier) — outcome-based rubric design, Python verifiers, agent safety surfaces</li>
+        <li>Labelbox World Slim — Model Response Evaluation, 12-code weakness taxonomy</li>
+        <li>Outcome Ladybug / HiL-Bench — blocker injection for SWE-agents</li>
+        <li>Meter Pavilion — multi-agent prompt design</li>
+      </ul>
+      <p style="margin-top: 16px;">Bilingual ES/EN technical, deep expertise in regulated AI evaluation. Built and shipped Orquor Clinical to production solo.</p>
+    </div>
+    <div class="card">
+      <h3>Why this team wins</h3>
+      <p style="font-size: 14px;">Most healthcare-AI teams come from healthcare and learn AI evaluation late, badly, expensively. Freddy comes from <strong class="signal-text">the eval-rigor side</strong> and applied it to healthcare. The order matters: verifiers are not a feature you can bolt on, they are the architectural primitive.</p>
+    </div>
+  </div>
+  <p style="margin-top: 24px; font-size: 14px; color: var(--muted);">Hiring plan: senior ML eng (Q2), regulatory affairs / abogada healthcare (Q2), enterprise AE (Q3), 2 forward-deployed engineers (Q4).</p>
+</div>
+
+<!-- Slide 9: Competition -->
+<div class="slide" style="justify-content: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">09 / 16</span>
+  <h2>How we compete</h2>
+  <table>
+    <thead><tr><th>Competitor</th><th>Model</th><th>Their strength</th><th>Why they cannot replicate ACTO in 24 months</th></tr></thead>
+    <tbody>
+      <tr><td>LanguageLine</td><td>Human VRI/OPI</td><td>Brand, scale</td><td>Pricing model breaks with AI cost curve; cannot publish ACTO benchmarks</td></tr>
+      <tr><td>Cloudbreak / Martti</td><td>Healthcare VRI</td><td>EHR integration</td><td>USA-first, Spanish is not their wedge</td></tr>
+      <tr><td>Wordly</td><td>AI-only</td><td>Tech</td><td>No verifier suite, no audit primitive, no healthcare-vertical focus</td></tr>
+      <tr><td>DeepL / Google MT</td><td>Generic translation</td><td>Quality on common text</td><td>No healthcare specialization, no audit, no orchestration</td></tr>
+      <tr><td>DIY GPT wrappers</td><td>Hospital-built</td><td>Local control</td><td>No regulatory framework, security risk; healthcare ITs are already getting burned</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Slide 10: Moat -->
+<div class="slide" style="justify-content: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">10 / 16</span>
+  <h2>The moat compounds across 4 layers</h2>
+  <div class="grid grid-2">
+    <div class="card">
+      <h3>1. Dataset moat</h3>
+      <p>Every audit log is supervised data. 12 months in, we have the largest verified clinical-translation corpus in LATAM. Competitors cannot generate this without our customers.</p>
+    </div>
+    <div class="card">
+      <h3>2. Compliance moat</h3>
+      <p>HIPAA BAA, ISO 27001, SOC 2 Type II take 12–18 months to achieve. We start at month 1. Cumulative compliance is non-replicable.</p>
+    </div>
+    <div class="card">
+      <h3>3. Network moat</h3>
+      <p>Certified medical interpreters in LATAM are scarce. Our pipeline (active) is the largest among AI-orchestration competitors.</p>
+    </div>
+    <div class="card">
+      <h3>4. Memetic moat</h3>
+      <p>We are publishing the ACTO whitepaper, defining the category before competitors. Any vendor entering this space will explain themselves in our vocabulary.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 11: Unit economics -->
+<div class="slide" style="justify-content: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">11 / 16</span>
+  <h2>Unit economics — Orquor Clinical (Modelo A)</h2>
+  <table>
+    <thead><tr><th>Component</th><th>Monthly / hospital</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Revenue</td><td class="v">USD 3,000</td><td>Average for 200-bed hospital</td></tr>
+      <tr><td>GPU cost (A100 MIG, 100h/month)</td><td>USD 135</td><td>1 MIG slice per active hospital</td></tr>
+      <tr><td>Human interpreter reserve (20h bag)</td><td>USD 600</td><td>USD 30/h paid to LATAM interpreter</td></tr>
+      <tr><td>Storage + bandwidth</td><td>USD 35</td><td>S3 + encrypted transcript blobs</td></tr>
+      <tr><td>Compliance + insurance overhead</td><td>USD 180</td><td>E&O insurance prorated</td></tr>
+      <tr><td><strong>Gross margin</strong></td><td class="v"><strong>USD 2,050 (68%)</strong></td><td>Healthy SaaS clinical margin</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top: 24px;">40 hospitals at this profile → USD ~120k MRR · USD 1.44M ARR pure Clinical · before Telehealth API, Court, Hermes layered on.</p>
+</div>
+
+<!-- Slide 12: Traction -->
+<div class="slide" style="justify-content: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">12 / 16</span>
+  <h2>Traction</h2>
+  <div class="grid grid-4">
+    <div class="card">
+      <h3 style="color: var(--signal); font-size: 36px;">In prod</h3>
+      <p>Platform live, A100 + MIG operational</p>
+    </div>
+    <div class="card">
+      <h3 style="color: var(--signal); font-size: 36px;">5 vers.</h3>
+      <p>Iterations shipped to production</p>
+    </div>
+    <div class="card">
+      <h3 style="color: var(--signal); font-size: 36px;">8+</h3>
+      <p>Interpreter pipeline in cultivation</p>
+    </div>
+    <div class="card">
+      <h3 style="color: var(--signal); font-size: 36px;">9 spec</h3>
+      <p>Clinical specialty registers modeled</p>
+    </div>
+  </div>
+  <p style="margin-top: 32px;">First commercial pilot signed in Q1 2026 (CR medical tourism clinic, USD 28k ACV). Three more in active cultivation (CR + CO).</p>
+</div>
+
+<!-- Slide 13: Ask -->
+<div class="slide" style="justify-content: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">13 / 16</span>
+  <h2>The ask</h2>
+  <span class="big signal-text" style="font-size: 96px;">USD 600k</span>
+  <p style="font-size: 22px; margin-top: 12px;">Pre-seed round. 18-month runway.</p>
+  <div class="grid grid-3" style="margin-top: 32px;">
+    <div class="card"><h3>USD 220k</h3><p>Senior ML engineer + LATAM enterprise AE (year 1 fully loaded)</p></div>
+    <div class="card"><h3>USD 180k</h3><p>Compliance build (HIPAA + ISO 27001 + SOC 2 Type I), N+1 GPU infra, E&O insurance</p></div>
+    <div class="card"><h3>USD 200k</h3><p>Sales motion, brand, marketing, ACTO benchmark publication, 6-month buffer</p></div>
+  </div>
+  <p style="margin-top: 24px; font-size: 14px; color: var(--muted);">SAFE post-money cap USD 6M, 20% discount. Lead position open for the right LATAM-frontier-tech investor.</p>
+</div>
+
+<!-- Slide 14: Use of proceeds -->
+<div class="slide" style="justify-content: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">14 / 16</span>
+  <h2>What the round unlocks</h2>
+  <ul>
+    <li><strong>Month 4</strong> — HIPAA-ready (BAA signable, encryption + audit log productionized)</li>
+    <li><strong>Month 6</strong> — First 3 anchor hospitals paying. Estimated MRR USD 9k.</li>
+    <li><strong>Month 9</strong> — Orquor Telehealth API in alpha with 2 telehealth partners. ACTO benchmark v1 published.</li>
+    <li><strong>Month 12</strong> — 10–15 hospitals + 2 API partners. MRR USD 45–65k. SOC 2 Type I done.</li>
+    <li><strong>Month 18</strong> — 25–35 customers, MRR USD 90–140k. Series A conversation with frontier-tech VCs (Sequoia Frontier, Founders Fund, Founders Future, Magma, Salkantay) at USD 10–15M valuation.</li>
+  </ul>
+</div>
+
+<!-- Slide 15: Why us -->
+<div class="slide" style="justify-content: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">15 / 16</span>
+  <h2>Why us, why now, why here</h2>
+  <div class="grid grid-3">
+    <div class="card">
+      <h3>Why us</h3>
+      <p>Founder built outcome-based eval at scale for the largest AI labs. That's the order of operations everyone else gets wrong.</p>
+    </div>
+    <div class="card">
+      <h3>Why now</h3>
+      <p>Regulators tightening, AI accuracy crossing the threshold, healthcare AI budgets growing 35% YoY. The window is 18–24 months.</p>
+    </div>
+    <div class="card">
+      <h3>Why here</h3>
+      <p>Built in Peru: low-cost engineering, deep Spanish-medical talent pool, neutral jurisdiction, regulatory tailwind via Innóvate Perú.</p>
+    </div>
+  </div>
+  <p style="margin-top: 48px; max-width: 800px; font-size: 22px;"><em>"The first Sovereign AI Orchestration Company born in LATAM."</em></p>
+</div>
+
+<!-- Slide 16: Contact -->
+<div class="slide" style="justify-content: center; text-align: center; align-items: center;">
+  <span class="brand">orquor<span class="dot">.</span></span>
+  <span class="num">16 / 16</span>
+  <h1 style="font-size: 88px;">Let's talk.</h1>
+  <p style="font-size: 22px; margin-top: 24px;">Freddy [Apellido]</p>
+  <p style="font-size: 22px;">freddy@orquor.com</p>
+  <p style="font-size: 22px;">orquor.com</p>
+  <p style="font-size: 14px; color: var(--muted); margin-top: 64px;">© 2026 Orquor S.A.C. Confidential.</p>
+</div>
+
+</div>
+</body>
+</html>

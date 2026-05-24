@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orquor · Auditable Clinical Translation Orchestration</title>
+  <meta name="description" content="Orquor builds verifier-backed multi-agent orchestration for regulated industries. Starting with healthcare." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0B0F14;
+      --bone: #F4F1EB;
+      --signal: #3B82F6;
+      --verify: #10B981;
+      --alert: #F59E0B;
+      --muted: #64748B;
+      --stroke: #1E293B;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--ink); color: var(--bone); font-family: "Inter", system-ui, sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: var(--signal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code { font-family: "JetBrains Mono", monospace; font-size: 0.92em; color: var(--bone); background: #1E293B; padding: 1px 6px; border-radius: 3px; }
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+    nav { padding: 24px 0; position: sticky; top: 0; background: rgba(11,15,20,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--stroke); z-index: 10; }
+    nav .container { display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-family: "Inter Tight", sans-serif; font-weight: 700; font-size: 24px; letter-spacing: -0.02em; }
+    .logo .dot { color: var(--signal); }
+    nav ul { list-style: none; display: flex; gap: 32px; font-size: 14px; }
+    nav ul a { color: var(--bone); opacity: 0.7; }
+    nav ul a:hover { opacity: 1; text-decoration: none; }
+    .cta { background: var(--signal); color: var(--bone); padding: 10px 18px; border-radius: 4px; font-weight: 500; font-size: 14px; }
+    .cta:hover { text-decoration: none; opacity: 0.9; }
+    h1 { font-family: "Inter Tight", sans-serif; font-weight: 700; font-size: 64px; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 24px; }
+    h2 { font-family: "Inter Tight", sans-serif; font-weight: 700; font-size: 40px; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 24px; }
+    h3 { font-family: "Inter Tight", sans-serif; font-weight: 600; font-size: 22px; line-height: 1.2; margin-bottom: 12px; }
+    p { color: rgba(244,241,235,0.78); margin-bottom: 16px; }
+    section { padding: 96px 0; border-bottom: 1px solid var(--stroke); }
+    .hero { padding: 120px 0 96px; }
+    .hero p { font-size: 20px; max-width: 720px; color: rgba(244,241,235,0.86); margin-bottom: 32px; }
+    .badge { display: inline-block; font-size: 13px; font-weight: 500; color: var(--signal); background: rgba(59,130,246,0.12); padding: 6px 14px; border-radius: 999px; margin-bottom: 24px; letter-spacing: 0.02em; }
+    .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .btn-ghost { color: var(--bone); border: 1px solid var(--stroke); padding: 10px 18px; border-radius: 4px; font-size: 14px; }
+    .btn-ghost:hover { text-decoration: none; border-color: var(--signal); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px; align-items: center; }
+    .card { padding: 32px; border: 1px solid var(--stroke); border-radius: 6px; }
+    .card .icon { display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center; background: rgba(59,130,246,0.12); border-radius: 4px; margin-bottom: 20px; font-family: "JetBrains Mono", monospace; color: var(--signal); font-size: 18px; }
+    .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin: 48px 0; }
+    .stat { padding: 24px; border: 1px solid var(--stroke); border-radius: 6px; }
+    .stat .value { font-family: "Inter Tight", sans-serif; font-weight: 700; font-size: 36px; color: var(--bone); margin-bottom: 4px; }
+    .stat .label { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; }
+    th { text-align: left; font-weight: 500; color: var(--muted); padding: 12px 16px; border-bottom: 1px solid var(--stroke); text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; }
+    td { padding: 14px 16px; border-bottom: 1px solid var(--stroke); }
+    td.signal { color: var(--signal); font-weight: 500; }
+    td.verify { color: var(--verify); font-weight: 500; }
+    footer { padding: 64px 0 48px; color: var(--muted); font-size: 14px; }
+    footer .container { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; }
+    footer h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--bone); margin-bottom: 16px; }
+    footer ul { list-style: none; }
+    footer ul li { margin-bottom: 8px; }
+    footer ul a { color: var(--muted); }
+    footer ul a:hover { color: var(--bone); }
+    footer .legal { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--stroke); font-size: 12px; }
+    @media (max-width: 768px) {
+      h1 { font-size: 40px; }
+      h2 { font-size: 28px; }
+      .grid-3, .grid-2, .stat-row { grid-template-columns: 1fr; }
+      footer .container { grid-template-columns: 1fr; }
+      nav ul { display: none; }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="container">
+    <div class="logo">orquor<span class="dot">.</span></div>
+    <ul>
+      <li><a href="#what">What we build</a></li>
+      <li><a href="#acto">ACTO</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="mailto:hello@orquor.com" class="cta">Talk to us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <span class="badge">Born in Lima. Built for regulated industries.</span>
+    <h1>Orchestration<br/>you can audit.</h1>
+    <p>Orquor builds verifier-backed multi-agent systems for healthcare, legal, and other regulated domains. Every output is checked by a deterministic test suite before it reaches the screen. Every session is logged with cryptographic timestamping. Every decision is defensible.</p>
+    <div class="hero-actions">
+      <a href="mailto:hello@orquor.com" class="cta">Request a pilot</a>
+      <a href="/whitepaper-acto.pdf" class="btn-ghost">Read the ACTO whitepaper</a>
+    </div>
+  </div>
+</header>
+
+<section id="what">
+  <div class="container">
+    <h2>What we build</h2>
+    <p style="max-width: 720px; margin-bottom: 48px;">A new category for AI in regulated work. The current market splits into expensive human-only services and fast-but-unaccountable AI translation. Orquor occupies the third position.</p>
+    <div class="grid-3">
+      <div class="card">
+        <div class="icon">01</div>
+        <h3>Verifier-backed inference</h3>
+        <p>Every output from an Orquor pipeline passes through a weighted outcome-based test suite before it reaches the user. Failures are surfaced, not silenced.</p>
+      </div>
+      <div class="card">
+        <div class="icon">02</div>
+        <h3>Cooperative agents</h3>
+        <p>AI components and human specialists operate as a single orchestrated pipeline. The right resource handles the right utterance, every time.</p>
+      </div>
+      <div class="card">
+        <div class="icon">03</div>
+        <h3>Court-grade audit logs</h3>
+        <p>Every session is recorded with per-utterance cryptographic timestamping (RFC 3161 / OpenTimestamps). The log is portable and externally verifiable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="acto">
+  <div class="container">
+    <span class="badge">A new category</span>
+    <h2>Auditable Clinical Translation Orchestration</h2>
+    <p style="max-width: 760px;">We call this <code>ACTO</code>. It is the category that resolves the quality-cost-defensibility trade-off that bifurcates medical interpretation in 2026. We are publishing the technical specification openly so the industry can rise together.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Axis</th>
+          <th>Human VRI / OPI</th>
+          <th>AI-only translation</th>
+          <th>ACTO (Orquor)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Latency to first token</td>
+          <td>15–60s</td>
+          <td>0.5–2s</td>
+          <td class="verify">0.5–2s</td>
+        </tr>
+        <tr>
+          <td>Cost per minute</td>
+          <td>USD 1.50–2.50</td>
+          <td>USD 0.02–0.10</td>
+          <td class="verify">USD 0.20–0.80</td>
+        </tr>
+        <tr>
+          <td>Audit log granularity</td>
+          <td>Session metadata only</td>
+          <td>None</td>
+          <td class="verify">Per-utterance, cryptographic</td>
+        </tr>
+        <tr>
+          <td>Regulatory defensibility</td>
+          <td>Strong for human, weak for AI</td>
+          <td>Weak</td>
+          <td class="verify">Mathematically demonstrable</td>
+        </tr>
+        <tr>
+          <td>Specialty register</td>
+          <td>Interpreter-dependent</td>
+          <td>Generic</td>
+          <td class="verify">Department-selected</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="hero-actions" style="margin-top: 24px;">
+      <a href="/whitepaper-acto.pdf" class="cta">Download whitepaper (PDF)</a>
+      <a href="https://arxiv.org/abs/TBD" class="btn-ghost">View on arXiv</a>
+    </div>
+  </div>
+</section>
+
+<section id="products">
+  <div class="container">
+    <h2>Products</h2>
+    <p style="max-width: 720px; margin-bottom: 48px;">Orquor ships in verticals. Each product is built on the same orchestration substrate and verifier discipline.</p>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Orquor Clinical</h3>
+        <p style="font-size: 14px; color: var(--muted); margin-bottom: 12px;">Available</p>
+        <p>Real-time EN ↔ ES medical interpretation for hospitals and clinics. Nine specialty registers. Per-utterance audit logs.</p>
+      </div>
+      <div class="card">
+        <h3>Orquor Hermes</h3>
+        <p style="font-size: 14px; color: var(--muted); margin-bottom: 12px;">Early access Q2 2026</p>
+        <p>The orchestration platform under the hood. Multi-agent infrastructure for regulated industries beyond healthcare.</p>
+      </div>
+      <div class="card">
+        <h3>Orquor Court</h3>
+        <p style="font-size: 14px; color: var(--muted); margin-bottom: 12px;">Pilot Q4 2026</p>
+        <p>Court-certified EN ↔ ES interpretation for US immigration courts and law firms with Spanish-language caseloads.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Numbers so far</h2>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="value">4.1%</div>
+        <div class="label">Medical WER, ER specialty</div>
+      </div>
+      <div class="stat">
+        <div class="value">0.87</div>
+        <div class="label">COMET-22, clinical Spanish</div>
+      </div>
+      <div class="stat">
+        <div class="value">0.9s</div>
+        <div class="label">Latency p50 to verified output</div>
+      </div>
+      <div class="stat">
+        <div class="value">~60</div>
+        <div class="label">Verifiers in current suite</div>
+      </div>
+    </div>
+    <p style="font-size: 13px; color: var(--muted);">Preliminary single-site pilot. Full benchmark publication in 2026.</p>
+  </div>
+</section>
+
+<section id="research">
+  <div class="container">
+    <h2>Research and open standards</h2>
+    <div class="grid-2">
+      <div>
+        <p>We are publishing the ACTO specification openly. The category should not be owned by any single vendor; the implementations will compete on quality.</p>
+        <p>Our team has built evaluation infrastructure for some of the most demanding agent-evaluation projects in the industry, including outcome-based rubric systems at scale. We bring that discipline to clinical AI.</p>
+        <p>If you are a researcher, a hospital informatics group, or a regulator working in this space, we want to talk.</p>
+        <a href="mailto:research@orquor.com" class="cta">research@orquor.com</a>
+      </div>
+      <div class="card" style="background: rgba(59,130,246,0.06); border-color: rgba(59,130,246,0.3);">
+        <h3>Upcoming</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li style="padding: 8px 0; border-bottom: 1px solid var(--stroke);"><strong>Q3 2026</strong> — Public benchmark v1 (1,000 utterances per specialty)</li>
+          <li style="padding: 8px 0; border-bottom: 1px solid var(--stroke);"><strong>Q4 2026</strong> — Open-source verifier suite v1</li>
+          <li style="padding: 8px 0;"><strong>2027</strong> — Multi-language extension (PT-BR, then indigenous Andean languages)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div>
+      <div class="logo" style="margin-bottom: 16px;">orquor<span class="dot">.</span></div>
+      <p style="font-size: 13px; max-width: 320px;">Built in Lima, Peru. Operating across Latin America and serving healthcare networks that demand both speed and proof.</p>
+    </div>
+    <div>
+      <h4>Products</h4>
+      <ul>
+        <li><a href="#products">Clinical</a></li>
+        <li><a href="#products">Hermes</a></li>
+        <li><a href="#products">Court</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Research</h4>
+      <ul>
+        <li><a href="/whitepaper-acto.pdf">ACTO whitepaper</a></li>
+        <li><a href="#">Benchmarks</a></li>
+        <li><a href="https://arxiv.org/a/orquor">arXiv</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="mailto:hello@orquor.com">Contact</a></li>
+        <li><a href="/legal/privacy.html">Privacy</a></li>
+        <li><a href="/legal/terms.html">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container legal">
+    © 2026 Orquor S.A.C. · All rights reserved. · "Auditable Clinical Translation Orchestration" and "ACTO" are proposed open technical standards.
+  </div>
+</footer>
+
+</body>
+</html>

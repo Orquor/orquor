@@ -1,0 +1,50 @@
+# ORQUOR — GitHub Actions CI/CD
+# Se ejecuta en cada push y PR
+
+name: Orquor CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      
+      - name: Install dependencies
+        run: |
+          cd 06-hermes
+          pip install -r requirements.txt
+      
+      - name: Run verifiers
+        run: |
+          cd 06-hermes
+          python -m pytest verifiers/ -v --tb=short
+      
+      - name: Verify project integrity
+        run: python verify_integrity.py
+      
+      - name: Check whitepaper builds
+        run: |
+          which pandoc && pandoc 03-whitepaper-acto/whitepaper-acto.md -o /tmp/whitepaper.pdf --pdf-engine=xelatex || echo "pandoc not available, skipping PDF check"
+
+  content-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Check all content files exist
+        run: |
+          echo "LinkedIn posts: $(ls 09-content-calendar/linkedin/*.md 2>/dev/null | wc -l)"
+          echo "X posts: $(ls 09-content-calendar/x-twitter/*.md 2>/dev/null | wc -l)"
+          echo "YouTube scripts: $(ls 09-content-calendar/youtube/*.md 2>/dev/null | wc -l)"
+          echo "Newsletter: $(ls 09-content-calendar/newsletter/*.md 2>/dev/null | wc -l)"

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Orquor Academy · Become a senior AI Trainer for the Spanish-speaking world</title>
+<meta name="description" content="Learn the methodology of outcome-based evaluation that ships in frontier AI labs. Cohort-based, ES/EN bilingual, placement support." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet" />
+<style>
+:root { --ink:#0B0F14; --bone:#F4F1EB; --signal:#3B82F6; --verify:#10B981; --muted:#64748B; --stroke:#1E293B; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html, body { background: var(--ink); color: var(--bone); font-family: "Inter", system-ui, sans-serif; font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+a { color: var(--signal); text-decoration:none; }
+a:hover { text-decoration:underline; }
+.container { max-width:1100px; margin:0 auto; padding:0 32px; }
+nav { padding:24px 0; border-bottom:1px solid var(--stroke); position:sticky; top:0; background:rgba(11,15,20,0.92); backdrop-filter:blur(8px); z-index:10; }
+nav .container { display:flex; align-items:center; justify-content:space-between; }
+.brand { font-family:"Inter Tight"; font-weight:700; font-size:22px; letter-spacing:-0.02em; }
+.brand .dot { color: var(--signal); }
+.brand .sub { color: var(--muted); font-weight:500; margin-left:6px; font-size:14px; letter-spacing:0; }
+.cta { background: var(--signal); color: var(--bone); padding:10px 18px; border-radius:4px; font-size:14px; font-weight:500; }
+.cta:hover { text-decoration:none; opacity:0.9; }
+h1 { font-family:"Inter Tight"; font-weight:700; font-size:60px; letter-spacing:-0.03em; line-height:1.05; margin-bottom:24px; }
+h2 { font-family:"Inter Tight"; font-weight:700; font-size:36px; letter-spacing:-0.02em; line-height:1.1; margin-bottom:20px; }
+h3 { font-family:"Inter Tight"; font-weight:600; font-size:20px; margin-bottom:10px; }
+p { color: rgba(244,241,235,0.78); margin-bottom:14px; }
+section { padding:88px 0; border-bottom:1px solid var(--stroke); }
+.hero { padding:120px 0 88px; }
+.hero p { font-size:20px; max-width:760px; color: rgba(244,241,235,0.86); margin-bottom:28px; }
+.badge { display:inline-block; font-size:13px; color: var(--signal); background:rgba(59,130,246,0.12); padding:6px 14px; border-radius:999px; margin-bottom:24px; letter-spacing:0.02em; }
+.grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:32px; }
+.card { border:1px solid var(--stroke); border-radius:6px; padding:28px; }
+.card .icon { display:inline-flex; width:42px; height:42px; align-items:center; justify-content:center; background:rgba(59,130,246,0.12); color: var(--signal); font-family:"JetBrains Mono"; font-size:18px; border-radius:4px; margin-bottom:18px; }
+.module { padding:22px 0; border-bottom:1px solid var(--stroke); display:grid; grid-template-columns:80px 1fr; gap:24px; align-items:start; }
+.module:last-child { border-bottom:none; }
+.module .week { color: var(--signal); font-family:"JetBrains Mono"; font-size:13px; padding-top:4px; }
+.module h3 { margin-bottom:6px; }
+.faq { padding:18px 0; border-bottom:1px solid var(--stroke); }
+.faq:last-child { border-bottom:none; }
+.faq summary { cursor:pointer; font-family:"Inter Tight"; font-weight:600; font-size:17px; padding:6px 0; list-style:none; color: var(--bone); }
+.faq summary::-webkit-details-marker { display:none; }
+.faq summary::after { content:" +"; color: var(--muted); float:right; }
+.faq[open] summary::after { content:" −"; }
+.faq p { margin-top:10px; }
+.stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin:32px 0 0; }
+.stat { padding:22px; border:1px solid var(--stroke); border-radius:6px; }
+.stat .value { font-family:"Inter Tight"; font-weight:700; font-size:34px; color: var(--bone); margin-bottom:4px; }
+.stat .label { color: var(--muted); font-size:13px; text-transform:uppercase; letter-spacing:0.05em; }
+.pricing { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:32px; }
+.tier { border:1px solid var(--stroke); border-radius:6px; padding:30px; }
+.tier.featured { border-color: var(--signal); }
+.tier .price { font-family:"Inter Tight"; font-size:42px; font-weight:700; margin:12px 0; }
+.tier .price-detail { font-size:13px; color: var(--muted); margin-bottom:18px; }
+.tier ul { list-style:none; padding:0; margin-bottom:24px; }
+.tier ul li { padding:8px 0; border-bottom:1px solid var(--stroke); font-size:14px; color: rgba(244,241,235,0.86); }
+.tier ul li:before { content:"→ "; color: var(--signal); margin-right:6px; }
+footer { padding:48px 0; color: var(--muted); font-size:13px; }
+footer .container { display:flex; justify-content:space-between; gap:32px; flex-wrap:wrap; }
+@media (max-width: 760px) {
+  h1 { font-size:38px; }
+  h2 { font-size:26px; }
+  .grid-3, .grid-2, .pricing, .stat-row { grid-template-columns:1fr; }
+  .module { grid-template-columns:1fr; gap:8px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="brand">orquor<span class="dot">.</span><span class="sub">Academy</span></div>
+    <a href="#apply" class="cta">Apply for Cohort 01</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <span class="badge">Cohort 01 · Q3 2026 · Limited to 30 students</span>
+    <h1>Become the AI Trainer<br/>that frontier labs hire.</h1>
+    <p>Learn the methodology of outcome-based evaluation that ships at Anthropic, Scale, Labelbox, OpenAI. Eight-week cohort. Spanish-English bilingual. Built and taught by a senior practitioner. Placement support included.</p>
+    <a href="#apply" class="cta">Apply now</a>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>Why this exists</h2>
+    <p style="max-width:760px;">The most demanding agent-evaluation projects in the industry — OpenClaw Atlas, HiL-Bench, Blocker Injection, Model Response Evaluation — pay between USD 35 and USD 90 per hour for senior AI Trainers. The Spanish-speaking world has tens of thousands of qualified candidates and almost no structured training to reach those projects.</p>
+    <p style="max-width:760px;">Orquor Academy was built because the founder ran these pipelines for the past two years and learned how the work actually flows. We are teaching it directly — the methodologies, the rubric design, the verifier discipline, the prompt engineering, the anti-detection writing — to the next generation of practitioners.</p>
+    <div class="stat-row">
+      <div class="stat"><div class="value">8 weeks</div><div class="label">Cohort duration</div></div>
+      <div class="stat"><div class="value">USD 597</div><div class="label">Tier 1 price (early bird USD 397)</div></div>
+      <div class="stat"><div class="value">30</div><div class="label">Seats per cohort, no exceptions</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>What you learn</h2>
+    <div class="module">
+      <div class="week">Week 01</div>
+      <div>
+        <h3>The landscape of AI evaluation</h3>
+        <p>The market. The players. Who pays what for which kind of work. How outcome-based rubrics differ from old-style annotation. How to position yourself for the most demanding projects.</p>
+      </div>
+    </div>
+    <div class="module">
+      <div class="week">Week 02</div>
+      <div>
+        <h3>Rubric design fundamentals</h3>
+        <p>Atomic rubrics. Signed weights. Positive and negative verifiers. The 9-rule feedback decision tree. Real OpenClaw Atlas examples and worked exercises.</p>
+      </div>
+    </div>
+    <div class="module">
+      <div class="week">Week 03</div>
+      <div>
+        <h3>Verifier engineering in Python</h3>
+        <p>Writing pytest verifiers from scratch. Fixtures, parametrization, snapshot testing. How to structure a verifier suite that scales to 60+ tests across multiple domains.</p>
+      </div>
+    </div>
+    <div class="module">
+      <div class="week">Week 04</div>
+      <div>
+        <h3>Prompt engineering and anti-detection writing</h3>
+        <p>Writing prompts and persona dialogue that does not get rejected by AI-detection. The 31-pattern checklist of AI-generated tells. Cultivating a human voice in technical text.</p>
+      </div>
+    </div>
+    <div class="module">
+      <div class="week">Week 05</div>
+      <div>
+        <h3>Universe design and safety surface</h3>
+        <p>How to build a Universe (persona, world, tensions). Safety surface mapping. Private data, estate planning, financial advice, mental health — the domains where the work is most consequential.</p>
+      </div>
+    </div>
+    <div class="module">
+      <div class="week">Week 06</div>
+      <div>
+        <h3>Model Response Evaluation at scale</h3>
+        <p>The 12 weakness codes (INST / OVERENG / TOOL / LAZY / VERIFY / FALSE / ROOT / DESTRUCT / FILE / HALLUC / DOCS / VERBOSE). Scoring on the 0–7 scale. How to write strengths and weaknesses that survive QA.</p>
+      </div>
+    </div>
+    <div class="module">
+      <div class="week">Week 07</div>
+      <div>
+        <h3>Blocker Injection and SWE-Agent evaluation</h3>
+        <p>Modifying Problem Statements, golden patches, test patches. The HiL-Bench framework. How to build tasks that surface real agent failures.</p>
+      </div>
+    </div>
+    <div class="module">
+      <div class="week">Week 08</div>
+      <div>
+        <h3>Placement and ongoing community</h3>
+        <p>Direct introductions to the right teams at Outlier, Scale, Labelbox, Surge AI. Portfolio review. Interview preparation. Lifetime access to the Orquor Academy community.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Who this is for</h2>
+    <div class="grid-3">
+      <div class="card">
+        <div class="icon">01</div>
+        <h3>Bilingual ES/EN technical professionals</h3>
+        <p>Software engineers, data scientists, linguists, healthcare technical writers who want to enter the AI Trainer market.</p>
+      </div>
+      <div class="card">
+        <div class="icon">02</div>
+        <h3>Current AI Trainers seeking depth</h3>
+        <p>You already work for Outlier or Scale at the basic-task level. You want to move into the senior projects that pay 2-3 times more per hour.</p>
+      </div>
+      <div class="card">
+        <div class="icon">03</div>
+        <h3>Domain experts wanting AI work</h3>
+        <p>Physicians, lawyers, accountants, researchers in LATAM who want to apply their domain expertise to AI evaluation and earn at international rates.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Pricing</h2>
+    <div class="pricing">
+      <div class="tier">
+        <h3>Self-paced</h3>
+        <div class="price">USD 197</div>
+        <div class="price-detail">Lifetime access</div>
+        <ul>
+          <li>All 8 modules recorded</li>
+          <li>Worked exercises with solutions</li>
+          <li>Community forum access</li>
+          <li>Sample verifiers + rubrics library</li>
+          <li>Self-paced completion</li>
+        </ul>
+        <a href="#apply" class="cta">Enroll</a>
+      </div>
+      <div class="tier featured">
+        <h3>Cohort live</h3>
+        <div class="price">USD 597</div>
+        <div class="price-detail">Per 8-week cohort · USD 397 early bird</div>
+        <ul>
+          <li>Everything in Self-paced</li>
+          <li>Live sessions 2× per week with founder</li>
+          <li>Cohort Discord + weekly office hours</li>
+          <li>Portfolio reviewed by instructor</li>
+          <li>Direct intros to Outlier / Scale / Labelbox</li>
+          <li>Recommendation letter on completion</li>
+        </ul>
+        <a href="#apply" class="cta">Apply now</a>
+      </div>
+      <div class="tier">
+        <h3>Placement</h3>
+        <div class="price">USD 0 upfront</div>
+        <div class="price-detail">10% revenue share, 6 months after placement</div>
+        <ul>
+          <li>Cohort live + placement service</li>
+          <li>Curated intros to specific projects</li>
+          <li>Interview preparation 1:1</li>
+          <li>Negotiation support on initial rate</li>
+          <li>Capped at USD 1,500 total</li>
+        </ul>
+        <a href="#apply" class="cta">Apply for screening</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="apply">
+  <div class="container">
+    <h2>FAQ</h2>
+    <details class="faq" open>
+      <summary>Do I need to be technical to apply?</summary>
+      <p>Some technical comfort helps. You should be able to read Python at a basic level by the end of week 1. We do not require prior ML experience. We do require willingness to learn.</p>
+    </details>
+    <details class="faq">
+      <summary>What is the placement guarantee?</summary>
+      <p>There is no guarantee. The placement tier provides curated introductions to specific projects, interview prep, and negotiation support. Whether a project hires you depends on your work. Our historical pass rate from Cohort applicants to first paid project is approximately 65% within 90 days of cohort completion.</p>
+    </details>
+    <details class="faq">
+      <summary>Can I take the cohort while working full-time?</summary>
+      <p>Yes. Most cohort members do. Time commitment is 6–10 hours per week including the two live sessions.</p>
+    </details>
+    <details class="faq">
+      <summary>Will the course be in Spanish or English?</summary>
+      <p>The live sessions and Discord are bilingual — speak in either language. The recorded modules are in English with high-quality Spanish captions. Reading material is in English. The work you produce as practice will be evaluated in both languages.</p>
+    </details>
+    <details class="faq">
+      <summary>Who teaches the course?</summary>
+      <p>Freddy [Apellido], founder of Orquor. He has been a senior AI Trainer for the past two years on OpenClaw Atlas, Labelbox World Slim, Outcome Ladybug, and Meter Pavilion. The curriculum is built from the methodology he uses daily.</p>
+    </details>
+    <details class="faq">
+      <summary>What if the cohort is full?</summary>
+      <p>Self-paced enrollment stays open. You also join the Cohort 02 priority list automatically. Cohort 02 opens 12 weeks after Cohort 01 completes.</p>
+    </details>
+    <details class="faq">
+      <summary>Refund policy?</summary>
+      <p>14-day no-questions refund window on Self-paced. For Cohort live, full refund before week 2, 50% refund before week 4, no refund after week 4.</p>
+    </details>
+
+    <div style="margin-top: 48px;">
+      <a href="mailto:academy@orquor.com?subject=Cohort%2001%20Application" class="cta" style="padding: 16px 32px; font-size: 16px;">Send application to academy@orquor.com</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div>
+      <div class="brand">orquor<span class="dot">.</span><span class="sub">Academy</span></div>
+      <p style="font-size:13px; margin-top:8px; max-width:300px;">Built in Lima. Teaching the AI Trainers of the Spanish-speaking world.</p>
+    </div>
+    <div>
+      <a href="/">orquor.com</a> · <a href="mailto:academy@orquor.com">academy@orquor.com</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

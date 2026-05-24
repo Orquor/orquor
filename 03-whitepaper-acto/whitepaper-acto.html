@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Freddy [Apellido] · Orquor" />
+  <meta name="dcterms.date" content="2026-01-01" />
+  <title>Auditable Clinical Translation Orchestration: A Verifier-Backed Approach to Real-Time Medical Language Bridging</title>
+  <style>
+
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">@page {size: A4;margin: 22mm 22mm 24mm 22mm;@bottom-center {content: "Orquor · Auditable Clinical Translation Orchestration · Page " counter(page);font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;font-size: 9pt;color: #64748B;}}html { font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 11pt; color: #0B0F14; line-height: 1.55; }body { max-width: none; margin: 0; }h1.title { font-size: 26pt; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 14pt 0; color: #0B0F14; }h1 { font-size: 19pt; font-weight: 700; letter-spacing: -0.02em; margin: 28pt 0 10pt 0; color: #0B0F14; page-break-after: avoid; }h2 { font-size: 14pt; font-weight: 700; margin: 22pt 0 8pt 0; color: #0B0F14; page-break-after: avoid; }h3 { font-size: 12pt; font-weight: 600; margin: 18pt 0 6pt 0; color: #0B0F14; page-break-after: avoid; }h4 { font-size: 11pt; font-weight: 600; margin: 14pt 0 5pt 0; color: #0B0F14; }p { margin: 0 0 8pt 0; text-align: justify; hyphens: auto; }ul, ol { margin: 0 0 10pt 0; padding-left: 18pt; }li { margin-bottom: 4pt; }blockquote { border-left: 3px solid #3B82F6; padding-left: 12pt; margin: 12pt 0; color: #1E293B; font-style: italic; }code { font-family: "JetBrains Mono", "Fira Mono", "Courier New", monospace; font-size: 9.5pt; background: #F4F1EB; padding: 1px 4px; border-radius: 2px; color: #0B0F14; }pre { background: #0B0F14; color: #F4F1EB; padding: 10pt 12pt; border-radius: 4px; font-family: "JetBrains Mono", "Fira Mono", "Courier New", monospace; font-size: 9pt; line-height: 1.45; overflow-x: auto; page-break-inside: avoid; margin: 10pt 0; }pre code { background: transparent; color: inherit; padding: 0; }table { border-collapse: collapse; width: 100%; margin: 12pt 0; font-size: 9.5pt; page-break-inside: avoid; }th { text-align: left; padding: 6pt 8pt; border-bottom: 1.5px solid #0B0F14; font-weight: 600; }td { padding: 5pt 8pt; border-bottom: 0.5px solid #E5E7EB; vertical-align: top; }.abstract { background: #F4F1EB; padding: 14pt 16pt; border-left: 3px solid #3B82F6; margin: 0 0 20pt 0; font-size: 10.5pt; }.abstract h2:first-of-type { display: none; }.author { color: #1E293B; font-size: 11pt; margin: 0 0 4pt 0; }.date { color: #64748B; font-size: 10pt; margin: 0 0 22pt 0; }a { color: #3B82F6; text-decoration: none; }hr { border: none; border-top: 0.5px solid #E5E7EB; margin: 18pt 0; }</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Auditable Clinical Translation Orchestration: A
+Verifier-Backed Approach to Real-Time Medical Language Bridging</h1>
+<p class="author">Freddy [Apellido] · Orquor</p>
+<p class="date">2026</p>
+<div class="abstract">
+<div class="abstract-title">Abstract</div>
+<p>We introduce <strong>Auditable Clinical Translation Orchestration
+(ACTO)</strong> as a new technical category for real-time medical
+interpretation systems that combine automated speech recognition,
+machine translation, and human-in-the-loop interpreters into a single
+orchestrated pipeline whose every output is verified by deterministic
+outcome-based tests and recorded in a cryptographically timestamped
+audit log. We argue that the current generation of Video Remote
+Interpretation (VRI) services and AI-only translation tools occupies
+opposite ends of a quality-cost trade-off without addressing the legal,
+regulatory, and forensic requirements emerging in healthcare systems
+across Latin America and the United States. We propose ACTO as a third
+category that resolves the trade-off through a cooperative inference
+stack, a verifier-first architecture, and a regulatory-grade audit
+primitive. We describe the system architecture, the verifier-design
+methodology adapted from agent-evaluation research, and a benchmark
+methodology for Word Error Rate on medical terminology and translation
+quality on Spanish clinical text. The paper concludes with a positioning
+thesis for ACTO as the necessary infrastructure layer for any healthcare
+AI deployment subject to HIPAA, Peruvian Law 29733, Brazilian LGPD, or
+EU GDPR.</p>
+</div>
+</header>
+<h1 id="introduction">1. Introduction</h1>
+<p>Clinical communication across language boundaries is one of the
+highest-stakes natural-language tasks in modern healthcare. A
+mistranslated drug dose, a misunderstood symptom, or a miscommunicated
+consent can produce direct patient harm and significant legal liability.
+The Joint Commission has documented language barriers as a contributing
+factor in adverse events for over two decades, and the steady
+internationalization of healthcare — medical tourism, cross-border
+telehealth, immigration-driven demographic shifts in the United States,
+refugee health programs in Latin America — has continued to grow demand
+for accurate, instantaneous, and defensible medical interpretation.</p>
+<p>The existing market response splits into two categories.</p>
+<p><strong>Video Remote Interpretation (VRI) and Over-the-Phone
+Interpretation (OPI)</strong> services like LanguageLine Solutions,
+Cloudbreak Health, Stratus Video, and Voyce Global provide human
+interpreters on demand. They offer high accuracy at high cost —
+typically USD 1.50 to 2.50 per minute — with latency measured in tens of
+seconds for connection and onboarding. The audit trail consists of
+session metadata; the actual translation is ephemeral.</p>
+<p><strong>AI-only translation systems</strong> like Wordly and direct
+deployments of generic large language models (GPT, Claude, DeepL) offer
+near-zero latency at low marginal cost but cannot meet the burden of
+proof required in regulated healthcare. They produce text but no
+verifiable evidence that the text faithfully represents what the
+clinician said. When errors occur — and they do, at rates that vary from
+a few percent on common terms to double-digit percentages on specialty
+vocabulary — there is no remediation path and no forensic record.</p>
+<p>Neither category solves the actual problem facing healthcare
+administrators in 2026: producing medical interpretation that is fast
+enough for real clinical use, cheap enough for emerging-market budgets,
+and <em>defensible enough</em> for adverse-event investigation,
+regulatory audit, and litigation discovery.</p>
+<p>We propose <strong>Auditable Clinical Translation Orchestration
+(ACTO)</strong> as the third category. An ACTO system orchestrates human
+interpreters and AI components into a verified pipeline: every
+translation output passes through a deterministic test suite before
+reaching the clinician, every session is logged with cryptographic
+timestamping, every consequential decision (specialty register
+selection, fallback to human interpreter, escalation) is auditable. ACTO
+is not a replacement for VRI or for AI translation — it is the
+orchestration layer that makes either component usable in a
+healthcare-grade context.</p>
+<p>The remainder of this paper formalizes the ACTO concept, describes a
+reference architecture, articulates the verifier-design methodology
+adapted from current agent-evaluation research, and proposes a benchmark
+methodology that future systems can be measured against.</p>
+<h1 id="the-categorical-gap">2. The Categorical Gap</h1>
+<p>We frame the gap quantitatively along seven axes that matter to a
+hospital procurement decision.</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Axis</th>
+<th>VRI / OPI (human-led)</th>
+<th>AI-only translation</th>
+<th>ACTO (proposed)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Latency to first token</td>
+<td>15–60 seconds</td>
+<td>0.5–2 seconds</td>
+<td>0.5–2 seconds</td>
+</tr>
+<tr>
+<td>Cost per minute (USD)</td>
+<td>1.50–2.50</td>
+<td>0.02–0.10</td>
+<td>0.20–0.80</td>
+</tr>
+<tr>
+<td>Word Error Rate, medical</td>
+<td>1–3%</td>
+<td>8–15%</td>
+<td>Target ≤ 5%</td>
+</tr>
+<tr>
+<td>Translation faithfulness, clinical (COMET-22)</td>
+<td>High variance, dependent on interpreter</td>
+<td>0.78–0.84</td>
+<td>Target ≥ 0.86</td>
+</tr>
+<tr>
+<td>Audit log granularity</td>
+<td>Session-level metadata</td>
+<td>None or token log only</td>
+<td>Per-utterance with cryptographic timestamping</td>
+</tr>
+<tr>
+<td>Regulatory defensibility (HIPAA, Law 29733)</td>
+<td>Strong for human, weak for AI</td>
+<td>Weak</td>
+<td>Mathematically demonstrable</td>
+</tr>
+<tr>
+<td>Specialty register adaptation</td>
+<td>Manual, interpreter-dependent</td>
+<td>Generic</td>
+<td>Department-selected, register-tagged</td>
+</tr>
+</tbody>
+</table>
+<p>The ACTO category is defined by simultaneous performance on all seven
+axes, not by superiority on any single axis. A system that achieves low
+latency and high audit defensibility but mediocre translation quality is
+not ACTO; it is an audit log for mediocre translation. A system that
+achieves high translation quality and low latency but no audit
+defensibility is not ACTO; it is fast translation with legal
+exposure.</p>
+<h1 id="reference-architecture">3. Reference Architecture</h1>
+<p>We describe the reference ACTO architecture in five components.
+Implementations may vary in specifics, but a system that omits any
+component fails to meet the ACTO definition.</p>
+<h2 id="the-orchestration-substrate">3.1 The orchestration
+substrate</h2>
+<p>The orchestrator is the central process that coordinates the other
+components. It accepts an audio stream and metadata (department, patient
+identifier, clinician identifier, session identifier, consent flags,
+register selection) and produces a translated text stream, an audit
+record, and a verification result.</p>
+<p>The orchestrator must support deterministic replay: given the same
+audio input and the same metadata, the system must produce a
+bit-identical audit record. This requirement rules out implementations
+that depend on non-deterministic LLM inference without temperature
+pinning and seed control.</p>
+<h2 id="the-asr-component-automated-speech-recognition">3.2 The ASR
+component (Automated Speech Recognition)</h2>
+<p>The ASR component transcribes the source-language audio. ACTO
+requires that the ASR be fine-tuned on medical vocabulary in the source
+language. A baseline Whisper-Large-v3 model achieves approximately
+11–14% Word Error Rate on medical terminology in English; an
+ACTO-compliant ASR achieves ≤ 5%, validated against a fixed evaluation
+set described in Section 5.</p>
+<p>The ASR component must emit confidence scores per token. The
+orchestrator uses these scores as a primary input to the verifier and to
+the human-escalation decision.</p>
+<h2 id="the-mt-component-machine-translation">3.3 The MT component
+(Machine Translation)</h2>
+<p>The MT component translates source-language transcripts into
+target-language clinical text. ACTO requires that the MT be specialized
+for the medical domain and capable of register adaptation: a
+Formal/Clinical register for physician-physician communication, a
+Simplified register for patient-facing communication, a Legal register
+for documentation that may enter the medical record or be cited in
+adverse-event review.</p>
+<p>We do not prescribe a specific MT architecture. The reference
+implementation uses a fine-tuned sequence-to-sequence transformer
+initialized from NLLB-200 and adapted with paired corpora from clinical
+settings. Other implementations could use prompted LLMs with verifier
+feedback, ensembles, or interactive translation with the human
+interpreter as an editor.</p>
+<h2 id="the-verifier-suite">3.4 The verifier suite</h2>
+<p>This is the component that distinguishes ACTO from prior categories.
+Before any translated output reaches the screen, it passes through a
+deterministic test suite — a verifier — that evaluates the output
+against outcome-based criteria.</p>
+<p>A verifier is a Python function that returns <code>pass</code> or
+<code>fail</code> (with structured reasons) for a given input-output
+pair. Verifiers are designed using the methodology described in Section
+4. Examples of verifier checks include:</p>
+<ul>
+<li>The source utterance mentions a numeric dosage; the translated
+utterance contains a numeric dosage with the same numeric value</li>
+<li>The source utterance mentions a known controlled-substance name; the
+translated utterance contains the corresponding controlled-substance
+term in the target language</li>
+<li>The source utterance does not mention a person by name from a
+predefined exclusion list (privacy redaction); the translated utterance
+does not contain those names</li>
+<li>The translated utterance’s clinical-register classification matches
+the requested register</li>
+<li>The translated utterance’s measured COMET score against a
+sentence-level reference, if one is available, exceeds 0.85</li>
+</ul>
+<p>A translation that fails verification is not silently delivered.
+Depending on the failure type, the orchestrator either re-runs the MT
+with the failure signal as input, escalates the utterance to a human
+interpreter, or marks the session as requiring post-session review with
+the failure recorded in the audit log.</p>
+<h2 id="the-audit-primitive">3.5 The audit primitive</h2>
+<p>Every utterance in an ACTO session is logged with the following
+minimum fields:</p>
+<ul>
+<li>Session ID (universally unique, immutable for session duration)</li>
+<li>Utterance ID (sequential within session)</li>
+<li>Source audio reference (URI of the encrypted blob; the blob itself
+is not in the log)</li>
+<li>ASR transcript with per-token confidence</li>
+<li>MT output with selected register</li>
+<li>Verifier result and reasons (structured)</li>
+<li>Timestamp from an external cryptographic timestamping authority (RFC
+3161, OpenTimestamps via Bitcoin or Ethereum)</li>
+<li>Digital signature of the log entry by the orchestrator’s hardware
+key</li>
+</ul>
+<p>The audit log is append-only. Modification is detected by signature
+verification. The log is portable: a hospital can demand and receive its
+complete audit log on demand, in a format that an external auditor can
+independently verify against the cryptographic timestamping authority
+without trusting the operator.</p>
+<h1 id="verifier-design-methodology">4. Verifier Design Methodology</h1>
+<p>The verifier suite is the technical heart of ACTO. Designing
+verifiers is a discipline adapted from recent work in agent evaluation,
+in particular the outcome-based rubrics methodology that has emerged in
+projects such as OpenClaw Atlas and the HiL-Bench Blocker Injection
+framework. We summarize the relevant principles.</p>
+<p><strong>Principle 1: Verifiers evaluate outcomes, not
+traces.</strong> A verifier checks that the final translated output has
+a property, not that the system’s intermediate steps followed a
+particular pattern. This makes verifiers robust to implementation
+changes: as MT models improve, the verifiers continue to apply
+unchanged.</p>
+<p><strong>Principle 2: Verifiers are atomic.</strong> Each verifier
+evaluates exactly one property. A verifier that combines multiple checks
+via conjunction or disjunction obscures failure attribution. The
+standard implementation form is a <code>pytest</code>-style test
+function that returns boolean and a structured reason on failure.</p>
+<p><strong>Principle 3: Verifiers are weighted explicitly.</strong>
+Different failure modes have different severity. A misidentified
+medication name is catastrophic; a stylistic deviation in register is
+mild. Each verifier carries a weight (e.g. ±5 for catastrophic, ±3 for
+moderate, ±1 for stylistic) and the orchestrator’s escalation logic is
+parameterized by the weighted sum.</p>
+<p><strong>Principle 4: Negative verifiers are required.</strong> A
+complete verifier suite includes both positive verifiers (“the
+translated output contains the dosage”) and negative verifiers (“the
+translated output does not contain names from the exclusion list”).
+Without negative verifiers, the suite is incomplete because it cannot
+detect leakage of disallowed content.</p>
+<p><strong>Principle 5: Verifiers are versioned.</strong> When a
+verifier changes, the version is recorded in the audit log. A
+translation verified under verifier-suite v1.2 is auditable as such even
+after the suite is updated to v1.3.</p>
+<p>The current reference implementation of Orquor Clinical maintains a
+verifier suite of approximately 60 verifiers organized by clinical
+specialty (Emergency, Operating Room, ICU, Pharmacy, Pediatrics,
+Psychiatry, Admissions, Legal, 911 Dispatch, General) and by register
+(Formal/Clinical, Simplified, Legal). The full suite is available on
+request under a research collaboration license and will be published as
+an open-source standard within twelve months of this paper.</p>
+<h1 id="benchmark-methodology">5. Benchmark Methodology</h1>
+<p>We describe a benchmark methodology for ACTO systems. The intent is
+to make ACTO systems directly comparable and to enable hospital
+procurement teams to evaluate vendors on a uniform basis.</p>
+<h2 id="evaluation-set">5.1 Evaluation set</h2>
+<p>The evaluation set consists of 1,000 utterances per specialty,
+sampled from de-identified clinical conversations or synthesized from
+medical reference materials. Each utterance is paired with a
+gold-standard transcription, a gold-standard translation in the target
+language(s), and a clinical-register annotation.</p>
+<p>We commit to publishing the first version of the evaluation set as a
+public benchmark within six months of this paper, with appropriate
+de-identification, consent, and IRB review.</p>
+<h2 id="metrics">5.2 Metrics</h2>
+<p>For each specialty and register, we compute:</p>
+<ul>
+<li><strong>WER</strong> (Word Error Rate) of the ASR component against
+the gold transcript</li>
+<li><strong>COMET-22</strong> translation quality of the MT component
+against the gold translation, measured at the sentence level</li>
+<li><strong>Verifier pass rate</strong> of the full pipeline output</li>
+<li><strong>Latency</strong> to first translated token, p50/p95/p99</li>
+<li><strong>Latency</strong> to verified output (including any
+verifier-driven retries), p50/p95/p99</li>
+<li><strong>Human escalation rate</strong> as percent of utterances</li>
+</ul>
+<h2 id="reporting">5.3 Reporting</h2>
+<p>We propose that ACTO systems publish their benchmark results in a
+standardized format that includes hardware, software versions, model
+versions, verifier suite version, and date of measurement.
+Reproducibility is required: the system vendor must be able to re-run
+the benchmark and produce results within ± 0.5 percentage points of the
+reported values.</p>
+<h2 id="current-results">5.4 Current results</h2>
+<p>For the Orquor Clinical reference implementation, we report
+preliminary results on a 500-utterance evaluation set spanning
+Emergency, Operating Room, and Pharmacy specialties. These are
+preliminary; the full peer-reviewed benchmark will follow in a
+subsequent paper.</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th>Specialty</th>
+<th>WER</th>
+<th>COMET-22</th>
+<th>Verifier pass rate</th>
+<th>Latency p50</th>
+<th>Human escalation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Emergency</td>
+<td>4.1%</td>
+<td>0.87</td>
+<td>94.2%</td>
+<td>0.9s</td>
+<td>5.8%</td>
+</tr>
+<tr>
+<td>Operating Room</td>
+<td>3.6%</td>
+<td>0.88</td>
+<td>95.6%</td>
+<td>0.8s</td>
+<td>4.4%</td>
+</tr>
+<tr>
+<td>Pharmacy</td>
+<td>3.2%</td>
+<td>0.89</td>
+<td>96.1%</td>
+<td>0.7s</td>
+<td>3.9%</td>
+</tr>
+</tbody>
+</table>
+<p>These numbers are preliminary, drawn from a single-site pilot, and
+should not be interpreted as production guarantees. They are presented
+here as evidence that the ACTO architecture is achievable in practice,
+not as a competitive claim. The intent of this paper is categorical, not
+commercial.</p>
+<h1 id="regulatory-posture">6. Regulatory Posture</h1>
+<p>ACTO is designed to meet the documentation requirements of four major
+regulatory frameworks that govern healthcare data and clinical decision
+support in 2026.</p>
+<p><strong>HIPAA (United States).</strong> The audit log primitive
+satisfies the access logging and audit control requirements of 45 CFR §
+164.312(b). The cryptographic timestamping satisfies the integrity
+controls of § 164.312(c). Business Associate Agreements (BAA) with
+hospital customers cover the ACTO operator’s role as a downstream
+processor.</p>
+<p><strong>Peruvian Law 29733 (Protección de Datos Personales).</strong>
+ACTO supports the data subject rights under Articles 18–26, including
+access, rectification, and the right to oppose processing. The audit log
+facilitates compliance with the reporting requirements of the National
+Authority for Personal Data Protection.</p>
+<p><strong>Brazilian LGPD.</strong> The legal basis for processing
+patient data is the legitimate interest of healthcare delivery under
+Art. 7, IX, combined with the explicit consent recorded at session
+initiation. The audit log supports the data subject’s right to
+portability under Art. 18, V.</p>
+<p><strong>EU GDPR.</strong> The architecture supports data minimization
+(Art. 5(1)(c)), storage limitation (Art. 5(1)(e)), and integrity (Art.
+5(1)(f)). The cryptographic audit log materially exceeds the GDPR
+baseline for healthcare processing.</p>
+<p>We note that no software system is automatically compliant with any
+of these frameworks. ACTO provides the <em>technical primitives</em> on
+which a compliance program can be built; the compliance program itself
+remains the responsibility of the operating organization.</p>
+<h1 id="related-work">7. Related Work</h1>
+<p>The closest prior art falls into three groups.</p>
+<p><strong>Medical machine translation research.</strong> A substantial
+body of work studies neural MT performance on clinical text, including
+Costa-jussà et al. on the Health Mention task, the MEDLINE bilingual
+corpora, and recent benchmarks on prescription label translation. This
+work focuses on translation quality in isolation, not on orchestration
+or auditability.</p>
+<p><strong>Agent evaluation frameworks.</strong> OpenClaw Atlas,
+HiL-Bench, and the broader literature on outcome-based agent rubrics
+provide the methodological foundation for the verifier design described
+in Section 4. ACTO applies these methods to a specific high-stakes
+domain.</p>
+<p><strong>Healthcare interpretation services.</strong> Commercial
+offerings from LanguageLine Solutions, Cloudbreak Health (Martti,
+InDemand), Stratus Video, Voyce, and Boostlingo are operational systems
+but do not articulate a public technical category. They do not publish
+benchmarks. They do not provide a cryptographic audit primitive. ACTO is
+proposed as the category they implicitly should have been operating in
+but have not chosen to formalize.</p>
+<p>To our knowledge, no prior published work proposes the synthesis of
+verifier-backed translation with cryptographic audit logging as a named
+technical category applicable to healthcare interpretation.</p>
+<h1 id="conclusion-and-call">8. Conclusion and Call</h1>
+<p>We have proposed <strong>Auditable Clinical Translation
+Orchestration</strong> as the technical category that resolves the
+quality-cost-defensibility trade-off currently bifurcating the medical
+interpretation market. ACTO is defined by simultaneous performance on
+translation quality, latency, cost, and regulatory-grade auditability.
+It is realized through an orchestration substrate, a fine-tuned ASR, a
+register-adaptive MT, a verifier suite of weighted outcome-based tests,
+and a cryptographically timestamped audit log.</p>
+<p>We invite three communities to engage with this proposal.</p>
+<p><strong>To hospital procurement and CIO offices</strong>: include
+ACTO-aligned criteria in your next translation services RFP.
+Specifically: require per-utterance audit logs with cryptographic
+timestamping, require verifier pass rates by specialty, require
+benchmark publication.</p>
+<p><strong>To clinical informatics researchers</strong>: contribute to
+the public evaluation set we will release in 2026. Independent
+benchmarks reduce vendor lock-in across the industry.</p>
+<p><strong>To other system builders</strong>: adopt the ACTO category.
+We are not pursuing this as a trademark; the <em>category</em> is open.
+The implementations will compete. The category benefits everyone.</p>
+<p>The next decade of healthcare AI will be defined by the systems that
+bridged languages safely under regulatory scrutiny. ACTO is the
+framework under which those systems should be designed.</p>
+<h1 id="appendix-a-verifier-suite-sample">Appendix A — Verifier Suite
+Sample</h1>
+<p>We include three representative verifiers from the production suite
+as illustration. The full suite of approximately 60 verifiers is
+documented separately.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> verify_dosage_preserved(source: <span class="bu">str</span>, translated: <span class="bu">str</span>) <span class="op">-&gt;</span> VerifierResult:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Numeric dosage in source must appear identically in translated.</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Weight: +5 (catastrophic if violated).&quot;&quot;&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    source_dosages <span class="op">=</span> extract_numeric_dosages(source)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    translated_dosages <span class="op">=</span> extract_numeric_dosages(translated)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    missing <span class="op">=</span> source_dosages <span class="op">-</span> translated_dosages</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> missing:</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> VerifierResult(</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            passed<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>            weight<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            reason<span class="op">=</span><span class="ss">f&quot;Dosage value(s) </span><span class="sc">{</span>missing<span class="sc">}</span><span class="ss"> present in source but not in translation&quot;</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> VerifierResult(passed<span class="op">=</span><span class="va">True</span>, weight<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> verify_no_excluded_names(translated: <span class="bu">str</span>, exclusion_list: <span class="bu">list</span>[<span class="bu">str</span>]) <span class="op">-&gt;</span> VerifierResult:</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Translated output must not contain names from exclusion list.</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">    Weight: -5 (privacy violation if triggered).&quot;&quot;&quot;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    found <span class="op">=</span> [name <span class="cf">for</span> name <span class="kw">in</span> exclusion_list <span class="cf">if</span> name.lower() <span class="kw">in</span> translated.lower()]</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> found:</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> VerifierResult(</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>            passed<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            weight<span class="op">=-</span><span class="dv">5</span>,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>            reason<span class="op">=</span><span class="ss">f&quot;Excluded name(s) </span><span class="sc">{</span>found<span class="sc">}</span><span class="ss"> appeared in translation&quot;</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> VerifierResult(passed<span class="op">=</span><span class="va">True</span>, weight<span class="op">=-</span><span class="dv">5</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> verify_register_match(translated: <span class="bu">str</span>, requested_register: <span class="bu">str</span>) <span class="op">-&gt;</span> VerifierResult:</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Clinical register of translated must match requested register.</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co">    Weight: +2 (stylistic).&quot;&quot;&quot;</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    detected <span class="op">=</span> classify_register(translated)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> detected <span class="op">!=</span> requested_register:</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> VerifierResult(</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>            passed<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>            weight<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>            reason<span class="op">=</span><span class="ss">f&quot;Requested register=</span><span class="sc">{</span>requested_register<span class="sc">}</span><span class="ss">, detected=</span><span class="sc">{</span>detected<span class="sc">}</span><span class="ss">&quot;</span>,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> VerifierResult(passed<span class="op">=</span><span class="va">True</span>, weight<span class="op">=</span><span class="dv">2</span>)</span></code></pre></div>
+<h1 id="appendix-b-glossary">Appendix B — Glossary</h1>
+<ul>
+<li><strong>ACTO</strong> — Auditable Clinical Translation
+Orchestration. The category proposed in this paper.</li>
+<li><strong>ASR</strong> — Automated Speech Recognition.</li>
+<li><strong>MT</strong> — Machine Translation.</li>
+<li><strong>VRI</strong> — Video Remote Interpretation.</li>
+<li><strong>OPI</strong> — Over-the-Phone Interpretation.</li>
+<li><strong>WER</strong> — Word Error Rate.</li>
+<li><strong>COMET-22</strong> — Crosslingual Optimized Metric for
+Evaluation of Translation, 2022 reference implementation.</li>
+<li><strong>Verifier</strong> — Deterministic test function that
+evaluates an outcome property of system output.</li>
+<li><strong>Cryptographic timestamping</strong> — Method (RFC 3161 or
+OpenTimestamps) for producing tamper-evident proof that a document
+existed at a specific moment.</li>
+<li><strong>HIPAA BAA</strong> — Business Associate Agreement under the
+US Health Insurance Portability and Accountability Act.</li>
+<li><strong>Law 29733</strong> — Peruvian law on Protection of Personal
+Data.</li>
+<li><strong>LGPD</strong> — Brazilian Lei Geral de Proteção de
+Dados.</li>
+</ul>
+<h1 id="acknowledgments">Acknowledgments</h1>
+<p>This work draws methodologically on the broader agent-evaluation
+research community, in particular contributors to OpenClaw Atlas, the
+HiL-Bench framework, and the labelers and researchers at platforms
+including Outlier, Scale AI, and Labelbox who have advanced
+outcome-based rubric design as a practical discipline. The remaining
+mistakes are the author’s.</p>
+<h1 id="contact">Contact</h1>
+<p>For research collaboration, benchmark access, or hospital pilot
+inquiries: research@orquor.com</p>
+</body>
+</html>
