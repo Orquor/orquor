@@ -13,122 +13,753 @@
       --ink: #0B0F14;
       --bone: #F4F1EB;
       --signal: #3B82F6;
+      --signal-soft: rgba(59,130,246,0.08);
+      --signal-glow: rgba(59,130,246,0.14);
       --verify: #10B981;
       --alert: #F59E0B;
       --muted: #64748B;
+      --muted-light: #94A3B8;
       --stroke: #1E293B;
+      --stroke-light: #263144;
+      --surface: #111820;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { background: var(--ink); color: var(--bone); font-family: "Inter", system-ui, sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-    a { color: var(--signal); text-decoration: none; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--ink);
+      color: var(--bone);
+      font-family: "Inter", system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background: var(--ink);
+      color: var(--bone);
+    }
+
+    a {
+      color: var(--signal);
+      text-decoration: none;
+      transition: color 0.2s ease, opacity 0.2s ease;
+    }
     a:hover { text-decoration: underline; }
-    code { font-family: "JetBrains Mono", monospace; font-size: 0.92em; color: var(--bone); background: #1E293B; padding: 1px 6px; border-radius: 3px; }
-    .container { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
-    nav { padding: 24px 0; position: sticky; top: 0; background: rgba(11,15,20,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--stroke); z-index: 10; }
-    nav .container { display: flex; align-items: center; justify-content: space-between; }
-    .logo { font-family: "Inter Tight", sans-serif; font-weight: 700; font-size: 24px; letter-spacing: -0.02em; }
+
+    code {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.9em;
+      color: var(--bone);
+      background: #1E293B;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+
+    /* ── Layout ─────────────────────────────── */
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    section {
+      padding: 104px 0;
+      border-bottom: 1px solid var(--stroke);
+    }
+    section:last-of-type { border-bottom: none; }
+
+    /* ── Navigation ─────────────────────────── */
+    nav {
+      padding: 22px 0;
+      position: sticky;
+      top: 0;
+      background: rgba(11,15,20,0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--stroke);
+      z-index: 100;
+    }
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: "Inter Tight", sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+    }
     .logo .dot { color: var(--signal); }
-    nav ul { list-style: none; display: flex; gap: 32px; font-size: 14px; }
-    nav ul a { color: var(--bone); opacity: 0.7; }
-    nav ul a:hover { opacity: 1; text-decoration: none; }
-    .cta { background: var(--signal); color: var(--bone); padding: 10px 18px; border-radius: 4px; font-weight: 500; font-size: 14px; }
-    .cta:hover { text-decoration: none; opacity: 0.9; }
-    h1 { font-family: "Inter Tight", sans-serif; font-weight: 700; font-size: 64px; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 24px; }
-    h2 { font-family: "Inter Tight", sans-serif; font-weight: 700; font-size: 40px; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 24px; }
-    h3 { font-family: "Inter Tight", sans-serif; font-weight: 600; font-size: 22px; line-height: 1.2; margin-bottom: 12px; }
-    p { color: rgba(244,241,235,0.78); margin-bottom: 16px; }
-    section { padding: 96px 0; border-bottom: 1px solid var(--stroke); }
-    .hero { padding: 120px 0 96px; }
-    .hero p { font-size: 20px; max-width: 720px; color: rgba(244,241,235,0.86); margin-bottom: 32px; }
-    .badge { display: inline-block; font-size: 13px; font-weight: 500; color: var(--signal); background: rgba(59,130,246,0.12); padding: 6px 14px; border-radius: 999px; margin-bottom: 24px; letter-spacing: 0.02em; }
-    .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-    .btn-ghost { color: var(--bone); border: 1px solid var(--stroke); padding: 10px 18px; border-radius: 4px; font-size: 14px; }
-    .btn-ghost:hover { text-decoration: none; border-color: var(--signal); }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px; align-items: center; }
-    .card { padding: 32px; border: 1px solid var(--stroke); border-radius: 6px; }
-    .card .icon { display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center; background: rgba(59,130,246,0.12); border-radius: 4px; margin-bottom: 20px; font-family: "JetBrains Mono", monospace; color: var(--signal); font-size: 18px; }
-    .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin: 48px 0; }
-    .stat { padding: 24px; border: 1px solid var(--stroke); border-radius: 6px; }
-    .stat .value { font-family: "Inter Tight", sans-serif; font-weight: 700; font-size: 36px; color: var(--bone); margin-bottom: 4px; }
-    .stat .label { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
-    table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; }
-    th { text-align: left; font-weight: 500; color: var(--muted); padding: 12px 16px; border-bottom: 1px solid var(--stroke); text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; }
-    td { padding: 14px 16px; border-bottom: 1px solid var(--stroke); }
-    td.signal { color: var(--signal); font-weight: 500; }
-    td.verify { color: var(--verify); font-weight: 500; }
-    footer { padding: 64px 0 48px; color: var(--muted); font-size: 14px; }
-    footer .container { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; }
-    footer h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--bone); margin-bottom: 16px; }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    nav ul a {
+      color: var(--bone);
+      opacity: 0.7;
+    }
+    nav ul a:hover {
+      opacity: 1;
+      text-decoration: none;
+    }
+    .cta-nav {
+      background: var(--signal);
+      color: var(--bone);
+      padding: 8px 18px;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 14px;
+      transition: background 0.2s ease;
+    }
+    .cta-nav:hover {
+      text-decoration: none;
+      opacity: 1;
+      background: #2563EB;
+    }
+
+    /* ── Typography ─────────────────────────── */
+    h1 {
+      font-family: "Inter Tight", sans-serif;
+      font-weight: 700;
+      font-size: 68px;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      margin-bottom: 28px;
+    }
+    h2 {
+      font-family: "Inter Tight", sans-serif;
+      font-weight: 700;
+      font-size: 40px;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+    h3 {
+      font-family: "Inter Tight", sans-serif;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+    p {
+      color: rgba(244,241,235,0.76);
+      margin-bottom: 16px;
+    }
+
+    /* ── Badge ──────────────────────────────── */
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--signal);
+      background: var(--signal-soft);
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: 1px solid rgba(59,130,246,0.18);
+    }
+
+    /* ── Buttons ────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: var(--signal);
+      color: var(--bone);
+    }
+    .btn-primary:hover { background: #2563EB; text-decoration: none; }
+    .btn-ghost {
+      color: var(--bone);
+      border: 1px solid var(--stroke-light);
+      background: transparent;
+    }
+    .btn-ghost:hover {
+      border-color: var(--signal);
+      text-decoration: none;
+    }
+    .btn-large {
+      padding: 16px 32px;
+      font-size: 15px;
+    }
+
+    /* ── Hero ────────────────────────────────── */
+    .hero {
+      padding: 100px 0 104px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle at center, rgba(59,130,246,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero .container { position: relative; z-index: 1; }
+    .hero h1 { max-width: 900px; }
+    .hero .subtitle {
+      font-size: 20px;
+      max-width: 680px;
+      color: rgba(244,241,235,0.82);
+      margin-bottom: 36px;
+      line-height: 1.55;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .hero-meta {
+      display: flex;
+      gap: 40px;
+      margin-top: 64px;
+      padding-top: 40px;
+      border-top: 1px solid var(--stroke);
+    }
+    .hero-meta-item .meta-value {
+      font-family: "Inter Tight", sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--bone);
+      margin-bottom: 2px;
+    }
+    .hero-meta-item .meta-label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Grids ──────────────────────────────── */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* ── Cards ──────────────────────────────── */
+    .card {
+      padding: 36px;
+      border: 1px solid var(--stroke);
+      border-radius: 6px;
+      background: var(--ink);
+      transition: border-color 0.25s ease;
+    }
+    .card:hover { border-color: var(--stroke-light); }
+    .card .icon {
+      display: inline-flex;
+      width: 40px;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+      background: var(--signal-soft);
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-family: "JetBrains Mono", monospace;
+      color: var(--signal);
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .card h3 { margin-bottom: 8px; }
+    .card .status {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 14px;
+    }
+    .card .status.live { color: var(--verify); }
+    .card .status.soon { color: var(--alert); }
+
+    /* ── Product cards specific ─────────────── */
+    .product-card {
+      padding: 36px;
+      border: 1px solid var(--stroke);
+      border-radius: 6px;
+      background: var(--surface);
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+    .product-card:hover {
+      border-color: rgba(59,130,246,0.35);
+      background: #141c27;
+    }
+    .product-card .product-icon {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--signal);
+      margin-bottom: 16px;
+      display: block;
+    }
+    .product-card h3 {
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+    .product-card .product-status {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+    .product-card .product-status.available { color: var(--verify); }
+    .product-card .product-status.pipeline { color: var(--alert); }
+    .product-card p {
+      font-size: 14px;
+      color: rgba(244,241,235,0.68);
+      line-height: 1.6;
+    }
+    .product-card .product-features {
+      list-style: none;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--stroke);
+    }
+    .product-card .product-features li {
+      font-size: 13px;
+      color: var(--muted-light);
+      padding: 5px 0;
+      padding-left: 18px;
+      position: relative;
+    }
+    .product-card .product-features li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--signal);
+      opacity: 0.5;
+    }
+
+    /* ── Stats / Metrics ────────────────────── */
+    .metrics-section {
+      background: var(--surface);
+      border-bottom: 1px solid var(--stroke);
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .stat-block {
+      padding: 28px 24px;
+      border: 1px solid var(--stroke-light);
+      border-radius: 6px;
+      text-align: center;
+      background: var(--ink);
+    }
+    .stat-block .value {
+      font-family: "Inter Tight", sans-serif;
+      font-weight: 700;
+      font-size: 38px;
+      color: var(--bone);
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+    .stat-block .label {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1.4;
+    }
+    .stat-block .sub {
+      font-size: 11px;
+      color: rgba(244,241,235,0.45);
+      margin-top: 4px;
+    }
+    .pilot-note {
+      margin-top: 32px;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pilot-note .dot-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--verify);
+      display: inline-block;
+    }
+
+    /* ── Comparison Table ───────────────────── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 28px 0;
+      font-size: 14px;
+    }
+    th {
+      text-align: left;
+      font-weight: 600;
+      color: var(--muted);
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--stroke);
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--stroke);
+    }
+    td.highlight { color: var(--verify); font-weight: 500; }
+
+    /* ── CTA Section ────────────────────────── */
+    .cta-section {
+      text-align: center;
+      padding: 112px 0;
+      position: relative;
+    }
+    .cta-section .container {
+      max-width: 680px;
+    }
+    .cta-section h2 {
+      font-size: 44px;
+      margin-bottom: 16px;
+    }
+    .cta-section p {
+      font-size: 18px;
+      color: rgba(244,241,235,0.72);
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+    .cta-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ── Footer ─────────────────────────────── */
+    footer {
+      padding: 72px 0 40px;
+      background: var(--surface);
+      border-top: 1px solid var(--stroke);
+      color: var(--muted);
+      font-size: 14px;
+    }
+    footer .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+    }
+    footer .footer-brand p {
+      font-size: 13px;
+      color: rgba(244,241,235,0.52);
+      max-width: 300px;
+      line-height: 1.65;
+    }
+    footer h4 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--bone);
+      margin-bottom: 18px;
+      font-weight: 600;
+    }
     footer ul { list-style: none; }
-    footer ul li { margin-bottom: 8px; }
-    footer ul a { color: var(--muted); }
-    footer ul a:hover { color: var(--bone); }
-    footer .legal { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--stroke); font-size: 12px; }
-    @media (max-width: 768px) {
-      h1 { font-size: 40px; }
-      h2 { font-size: 28px; }
-      .grid-3, .grid-2, .stat-row { grid-template-columns: 1fr; }
-      footer .container { grid-template-columns: 1fr; }
+    footer ul li { margin-bottom: 10px; }
+    footer ul a {
+      color: var(--muted);
+      font-size: 14px;
+      transition: color 0.2s ease;
+    }
+    footer ul a:hover { color: var(--bone); text-decoration: none; }
+    footer .footer-bottom {
+      margin-top: 48px;
+      padding-top: 28px;
+      border-top: 1px solid var(--stroke);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: rgba(244,241,235,0.38);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    footer .footer-bottom a {
+      color: rgba(244,241,235,0.38);
+    }
+    footer .footer-bottom a:hover { color: var(--bone); }
+
+    /* ── Responsive ─────────────────────────── */
+    @media (max-width: 900px) {
+      h1 { font-size: 44px; }
+      h2 { font-size: 30px; }
+      .hero-meta { flex-direction: column; gap: 24px; }
+      .grid-3, .grid-2, .stat-grid, footer .footer-grid {
+        grid-template-columns: 1fr;
+      }
       nav ul { display: none; }
+      section { padding: 72px 0; }
+      .hero { padding: 72px 0 80px; }
+      .cta-section { padding: 80px 0; }
     }
   </style>
 </head>
 <body>
+
+<!-- ═══════════════════════════════════════════
+     NAVIGATION
+     ═══════════════════════════════════════════ -->
 <nav>
   <div class="container">
     <div class="logo">orquor<span class="dot">.</span></div>
     <ul>
       <li><a href="#what">What we build</a></li>
-      <li><a href="#acto">ACTO</a></li>
       <li><a href="#products">Products</a></li>
+      <li><a href="#acto">ACTO</a></li>
       <li><a href="#research">Research</a></li>
-      <li><a href="mailto:hello@orquor.com" class="cta">Talk to us</a></li>
+      <li><a href="#demo" class="cta-nav">Schedule a demo</a></li>
     </ul>
   </div>
 </nav>
 
+<!-- ═══════════════════════════════════════════
+     HERO
+     ═══════════════════════════════════════════ -->
 <header class="hero">
   <div class="container">
-    <span class="badge">Born in Lima. Built for regulated industries.</span>
-    <h1>Orchestration<br/>you can audit.</h1>
-    <p>Orquor builds verifier-backed multi-agent systems for healthcare, legal, and other regulated domains. Every output is checked by a deterministic test suite before it reaches the screen. Every session is logged with cryptographic timestamping. Every decision is defensible.</p>
+    <span class="badge">Lima, Peru · Regulated-industry AI</span>
+    <h1>AI translation<br/>you can take to court.</h1>
+    <p class="subtitle">
+      Orquor builds verifier-backed multi-agent orchestration for clinical
+      interpretation. Every output checked. Every session logged with
+      cryptographic proof. Every decision defensible under audit.
+    </p>
     <div class="hero-actions">
-      <a href="mailto:hello@orquor.com" class="cta">Request a pilot</a>
-      <a href="/whitepaper-acto.pdf" class="btn-ghost">Read the ACTO whitepaper</a>
+      <a href="#demo" class="btn btn-primary btn-large">Schedule a demo</a>
+      <a href="/whitepaper-acto.pdf" class="btn btn-ghost">Read the ACTO whitepaper →</a>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="meta-value">4.1%</div>
+        <div class="meta-label">Medical WER, ER specialty</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="meta-value">0.9s</div>
+        <div class="meta-label">Latency p50 verified output</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="meta-value">~60</div>
+        <div class="meta-label">Verifiers in current suite</div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="meta-value">9</div>
+        <div class="meta-label">Specialty registers</div>
+      </div>
     </div>
   </div>
 </header>
 
+<!-- ═══════════════════════════════════════════
+     WHAT WE BUILD
+     ═══════════════════════════════════════════ -->
 <section id="what">
   <div class="container">
+    <span class="badge">Category design</span>
     <h2>What we build</h2>
-    <p style="max-width: 720px; margin-bottom: 48px;">A new category for AI in regulated work. The current market splits into expensive human-only services and fast-but-unaccountable AI translation. Orquor occupies the third position.</p>
+    <p style="max-width: 720px; margin-bottom: 48px; font-size: 17px;">
+      A third category for AI in regulated work. The market splits into expensive
+      human-only services and fast-but-unaccountable AI translation.
+      Orquor occupies the position in between: fast enough for clinical
+      workflows, rigorous enough for regulatory scrutiny.
+    </p>
     <div class="grid-3">
       <div class="card">
         <div class="icon">01</div>
         <h3>Verifier-backed inference</h3>
-        <p>Every output from an Orquor pipeline passes through a weighted outcome-based test suite before it reaches the user. Failures are surfaced, not silenced.</p>
+        <p>
+          Every output from an Orquor pipeline passes through a weighted,
+          outcome-based test suite before reaching the user.
+          Failures are surfaced, not silenced. The system ships with a
+          verifier coverage report for every deployment.
+        </p>
       </div>
       <div class="card">
         <div class="icon">02</div>
-        <h3>Cooperative agents</h3>
-        <p>AI components and human specialists operate as a single orchestrated pipeline. The right resource handles the right utterance, every time.</p>
+        <h3>Cooperative orchestration</h3>
+        <p>
+          AI agents and human specialists operate as a single pipeline.
+          The right resource handles the right utterance. Handoffs are
+          protocol-driven and logged end-to-end.
+        </p>
       </div>
       <div class="card">
         <div class="icon">03</div>
         <h3>Court-grade audit logs</h3>
-        <p>Every session is recorded with per-utterance cryptographic timestamping (RFC 3161 / OpenTimestamps). The log is portable and externally verifiable.</p>
+        <p>
+          Every session is recorded with per-utterance cryptographic
+          timestamping (RFC 3161 / OpenTimestamps). The log is portable,
+          tamper-evident, and externally verifiable.
+        </p>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ═══════════════════════════════════════════
+     PRODUCTS
+     ═══════════════════════════════════════════ -->
+<section id="products">
+  <div class="container">
+    <span class="badge">Products</span>
+    <h2>Three verticals, one substrate</h2>
+    <p style="max-width: 720px; margin-bottom: 48px; font-size: 17px;">
+      Each product runs on the same orchestration platform and verifier
+      discipline. Different surface areas, same guarantees.
+    </p>
+    <div class="grid-3">
+
+      <!-- Clinical -->
+      <div class="product-card">
+        <span class="product-icon">clinical</span>
+        <h3>Orquor Clinical</h3>
+        <div class="product-status available">Available</div>
+        <p>
+          Real-time EN ↔ ES medical interpretation for hospitals and clinics.
+          Deployed in live clinical environments. Nine specialty registers.
+          Per-utterance audit logs with cryptographic anchoring.
+        </p>
+        <ul class="product-features">
+          <li>Emergency, primary care, cardiology, oncology, OB/GYN, pediatrics, psychiatry, orthopedics, neurology</li>
+          <li>Per-utterance verifier pass/fail with scoring</li>
+          <li>Sub-second verified output latency (p50)</li>
+        </ul>
+      </div>
+
+      <!-- Hermes -->
+      <div class="product-card">
+        <span class="product-icon">hermes</span>
+        <h3>Orquor Hermes</h3>
+        <div class="product-status pipeline">Early access · Q2 2026</div>
+        <p>
+          The orchestration platform under the hood. Multi-agent
+          infrastructure for regulated industries beyond healthcare.
+          Bring your own models, define your own verifiers, deploy your
+          own pipelines.
+        </p>
+        <ul class="product-features">
+          <li>Agent-routing engine with protocol-driven handoffs</li>
+          <li>Pluggable verifier framework (custom test suites)</li>
+          <li>Cryptographic session logging built in</li>
+        </ul>
+      </div>
+
+      <!-- Academy -->
+      <div class="product-card">
+        <span class="product-icon">academy</span>
+        <h3>Orquor Academy</h3>
+        <div class="product-status pipeline">Pilot · Q3 2026</div>
+        <p>
+          Training and certification for clinical AI orchestration. Designed
+          for hospital informatics teams, clinical engineering departments,
+          and regulators evaluating AI-assisted interpretation systems.
+        </p>
+        <ul class="product-features">
+          <li>Clinical AI orchestration fundamentals</li>
+          <li>Verifier design and evaluation methodology</li>
+          <li>Regulatory readiness and audit preparation</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     METRICS / PILOT DATA
+     ═══════════════════════════════════════════ -->
+<div class="metrics-section">
+  <section id="metrics">
+    <div class="container">
+      <span class="badge">Pilot data</span>
+      <h2>Performance from the field</h2>
+      <p style="max-width: 720px; margin-bottom: 48px; font-size: 17px;">
+        Preliminary results from a single-site clinical pilot. These numbers
+        are from structured evaluation sessions across nine specialty
+        registers. Full benchmark publication expected in 2026.
+      </p>
+      <div class="stat-grid">
+        <div class="stat-block">
+          <div class="value">4.1%</div>
+          <div class="label">Medical WER</div>
+          <div class="sub">Emergency medicine register</div>
+        </div>
+        <div class="stat-block">
+          <div class="value">0.87</div>
+          <div class="label">COMET-22 score</div>
+          <div class="sub">Clinical Spanish · 95% CI [0.83, 0.91]</div>
+        </div>
+        <div class="stat-block">
+          <div class="value">0.9s</div>
+          <div class="label">Latency p50</div>
+          <div class="sub">Utterance to verified output</div>
+        </div>
+        <div class="stat-block">
+          <div class="value">~60</div>
+          <div class="label">Verifier suite</div>
+          <div class="sub">Weighted outcome-based checks</div>
+        </div>
+      </div>
+      <p class="pilot-note">
+        <span class="dot-indicator"></span>
+        Ongoing single-site deployment. Additional sites onboarding Q2 2026.
+        These figures are preliminary and subject to change as the sample grows.
+      </p>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     ACTO
+     ═══════════════════════════════════════════ -->
 <section id="acto">
   <div class="container">
     <span class="badge">A new category</span>
     <h2>Auditable Clinical Translation Orchestration</h2>
-    <p style="max-width: 760px;">We call this <code>ACTO</code>. It is the category that resolves the quality-cost-defensibility trade-off that bifurcates medical interpretation in 2026. We are publishing the technical specification openly so the industry can rise together.</p>
+    <p style="max-width: 760px; font-size: 17px;">
+      We call this <code>ACTO</code>. It is the technical specification that
+      resolves the quality-cost-defensibility trade-off bifurcating medical
+      interpretation in 2026. We are publishing it openly so the industry
+      can rise together.
+    </p>
 
     <table>
       <thead>
@@ -142,148 +773,153 @@
       <tbody>
         <tr>
           <td>Latency to first token</td>
-          <td>15–60s</td>
-          <td>0.5–2s</td>
-          <td class="verify">0.5–2s</td>
+          <td>15–60 s</td>
+          <td>0.5–2 s</td>
+          <td class="highlight">0.5–2 s</td>
         </tr>
         <tr>
           <td>Cost per minute</td>
           <td>USD 1.50–2.50</td>
           <td>USD 0.02–0.10</td>
-          <td class="verify">USD 0.20–0.80</td>
+          <td class="highlight">USD 0.20–0.80</td>
         </tr>
         <tr>
           <td>Audit log granularity</td>
           <td>Session metadata only</td>
           <td>None</td>
-          <td class="verify">Per-utterance, cryptographic</td>
+          <td class="highlight">Per-utterance, cryptographic</td>
         </tr>
         <tr>
           <td>Regulatory defensibility</td>
           <td>Strong for human, weak for AI</td>
           <td>Weak</td>
-          <td class="verify">Mathematically demonstrable</td>
+          <td class="highlight">Mathematically demonstrable</td>
         </tr>
         <tr>
           <td>Specialty register</td>
           <td>Interpreter-dependent</td>
           <td>Generic</td>
-          <td class="verify">Department-selected</td>
+          <td class="highlight">Department-selected</td>
         </tr>
       </tbody>
     </table>
 
-    <div class="hero-actions" style="margin-top: 24px;">
-      <a href="/whitepaper-acto.pdf" class="cta">Download whitepaper (PDF)</a>
-      <a href="https://arxiv.org/abs/TBD" class="btn-ghost">View on arXiv</a>
+    <div class="hero-actions" style="margin-top: 26px;">
+      <a href="/whitepaper-acto.pdf" class="btn btn-primary">Download whitepaper (PDF)</a>
+      <a href="https://arxiv.org/abs/TBD" class="btn btn-ghost">View on arXiv</a>
     </div>
   </div>
 </section>
 
-<section id="products">
-  <div class="container">
-    <h2>Products</h2>
-    <p style="max-width: 720px; margin-bottom: 48px;">Orquor ships in verticals. Each product is built on the same orchestration substrate and verifier discipline.</p>
-    <div class="grid-3">
-      <div class="card">
-        <h3>Orquor Clinical</h3>
-        <p style="font-size: 14px; color: var(--muted); margin-bottom: 12px;">Available</p>
-        <p>Real-time EN ↔ ES medical interpretation for hospitals and clinics. Nine specialty registers. Per-utterance audit logs.</p>
-      </div>
-      <div class="card">
-        <h3>Orquor Hermes</h3>
-        <p style="font-size: 14px; color: var(--muted); margin-bottom: 12px;">Early access Q2 2026</p>
-        <p>The orchestration platform under the hood. Multi-agent infrastructure for regulated industries beyond healthcare.</p>
-      </div>
-      <div class="card">
-        <h3>Orquor Court</h3>
-        <p style="font-size: 14px; color: var(--muted); margin-bottom: 12px;">Pilot Q4 2026</p>
-        <p>Court-certified EN ↔ ES interpretation for US immigration courts and law firms with Spanish-language caseloads.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="container">
-    <h2>Numbers so far</h2>
-    <div class="stat-row">
-      <div class="stat">
-        <div class="value">4.1%</div>
-        <div class="label">Medical WER, ER specialty</div>
-      </div>
-      <div class="stat">
-        <div class="value">0.87</div>
-        <div class="label">COMET-22, clinical Spanish</div>
-      </div>
-      <div class="stat">
-        <div class="value">0.9s</div>
-        <div class="label">Latency p50 to verified output</div>
-      </div>
-      <div class="stat">
-        <div class="value">~60</div>
-        <div class="label">Verifiers in current suite</div>
-      </div>
-    </div>
-    <p style="font-size: 13px; color: var(--muted);">Preliminary single-site pilot. Full benchmark publication in 2026.</p>
-  </div>
-</section>
-
+<!-- ═══════════════════════════════════════════
+     RESEARCH
+     ═══════════════════════════════════════════ -->
 <section id="research">
   <div class="container">
-    <h2>Research and open standards</h2>
+    <span class="badge">Research</span>
+    <h2>Open standards, published benchmarks</h2>
     <div class="grid-2">
       <div>
-        <p>We are publishing the ACTO specification openly. The category should not be owned by any single vendor; the implementations will compete on quality.</p>
-        <p>Our team has built evaluation infrastructure for some of the most demanding agent-evaluation projects in the industry, including outcome-based rubric systems at scale. We bring that discipline to clinical AI.</p>
-        <p>If you are a researcher, a hospital informatics group, or a regulator working in this space, we want to talk.</p>
-        <a href="mailto:research@orquor.com" class="cta">research@orquor.com</a>
+        <p style="font-size: 17px;">
+          We are publishing the ACTO specification openly. The category
+          should not be owned by any single vendor; implementations will
+          compete on quality, not on locked-in definitions.
+        </p>
+        <p>
+          Our team has built evaluation infrastructure for some of the most
+          demanding agent-evaluation projects in the industry, including
+          outcome-based rubric systems at scale. We bring that discipline
+          to clinical AI.
+        </p>
+        <p>
+          If you are a researcher, a hospital informatics group, or a
+          regulator working in this space, we want to talk.
+        </p>
+        <a href="mailto:research@orquor.com" class="btn btn-primary" style="margin-top: 8px;">research@orquor.com</a>
       </div>
-      <div class="card" style="background: rgba(59,130,246,0.06); border-color: rgba(59,130,246,0.3);">
-        <h3>Upcoming</h3>
+      <div class="card" style="background: var(--signal-soft); border-color: rgba(59,130,246,0.25);">
+        <h3 style="color: var(--signal);">Roadmap</h3>
         <ul style="list-style: none; padding: 0;">
-          <li style="padding: 8px 0; border-bottom: 1px solid var(--stroke);"><strong>Q3 2026</strong> — Public benchmark v1 (1,000 utterances per specialty)</li>
-          <li style="padding: 8px 0; border-bottom: 1px solid var(--stroke);"><strong>Q4 2026</strong> — Open-source verifier suite v1</li>
-          <li style="padding: 8px 0;"><strong>2027</strong> — Multi-language extension (PT-BR, then indigenous Andean languages)</li>
+          <li style="padding: 10px 0; border-bottom: 1px solid rgba(59,130,246,0.12);">
+            <strong>Q3 2026</strong><br>
+            <span style="font-size: 13px; color: var(--muted);">Public benchmark v1 — 1,000 utterances per specialty</span>
+          </li>
+          <li style="padding: 10px 0; border-bottom: 1px solid rgba(59,130,246,0.12);">
+            <strong>Q4 2026</strong><br>
+            <span style="font-size: 13px; color: var(--muted);">Open-source verifier suite v1</span>
+          </li>
+          <li style="padding: 10px 0;">
+            <strong>2027</strong><br>
+            <span style="font-size: 13px; color: var(--muted);">Multi-language extension: PT-BR, indigenous Andean languages</span>
+          </li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<footer>
+<!-- ═══════════════════════════════════════════
+     CTA: SCHEDULE A DEMO
+     ═══════════════════════════════════════════ -->
+<section id="demo" class="cta-section">
   <div class="container">
-    <div>
-      <div class="logo" style="margin-bottom: 16px;">orquor<span class="dot">.</span></div>
-      <p style="font-size: 13px; max-width: 320px;">Built in Lima, Peru. Operating across Latin America and serving healthcare networks that demand both speed and proof.</p>
-    </div>
-    <div>
-      <h4>Products</h4>
-      <ul>
-        <li><a href="#products">Clinical</a></li>
-        <li><a href="#products">Hermes</a></li>
-        <li><a href="#products">Court</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>Research</h4>
-      <ul>
-        <li><a href="/whitepaper-acto.pdf">ACTO whitepaper</a></li>
-        <li><a href="#">Benchmarks</a></li>
-        <li><a href="https://arxiv.org/a/orquor">arXiv</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>Company</h4>
-      <ul>
-        <li><a href="mailto:hello@orquor.com">Contact</a></li>
-        <li><a href="/legal/privacy.html">Privacy</a></li>
-        <li><a href="/legal/terms.html">Terms</a></li>
-      </ul>
+    <span class="badge">Next step</span>
+    <h2>See it in a live clinical scenario</h2>
+    <p>
+      Schedule a 30-minute technical demonstration. We walk through a
+      real clinical interpretation session with live verifier pass/fail
+      output and audit log generation. No slides. No hype.
+    </p>
+    <div class="cta-actions">
+      <a href="mailto:hello@orquor.com?subject=Demo%20request%20-%20Orquor%20Clinical" class="btn btn-primary btn-large">Schedule a demo →</a>
+      <a href="mailto:hello@orquor.com" class="btn btn-ghost">Contact sales</a>
     </div>
   </div>
-  <div class="container legal">
-    © 2026 Orquor S.A.C. · All rights reserved. · "Auditable Clinical Translation Orchestration" and "ACTO" are proposed open technical standards.
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo" style="margin-bottom: 16px;">orquor<span class="dot">.</span></div>
+        <p>
+          Built in Lima, Peru. Operating across Latin America and serving
+          healthcare networks that demand both speed and proof.
+        </p>
+      </div>
+      <div>
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#products">Clinical</a></li>
+          <li><a href="#products">Hermes</a></li>
+          <li><a href="#products">Academy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Research</h4>
+        <ul>
+          <li><a href="/whitepaper-acto.pdf">ACTO whitepaper</a></li>
+          <li><a href="#">Benchmarks</a></li>
+          <li><a href="https://arxiv.org/a/orquor">arXiv</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="mailto:hello@orquor.com">Contact</a></li>
+          <li><a href="/legal/privacy.html">Privacy</a></li>
+          <li><a href="/legal/terms.html">Terms</a></li>
+          <li><a href="https://github.com/orquor">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Orquor S.A.C. All rights reserved.</span>
+      <span>"Auditable Clinical Translation Orchestration" and "ACTO" are proposed open technical standards.</span>
+    </div>
   </div>
 </footer>
 
