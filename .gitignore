@@ -32,3 +32,12 @@ Thumbs.db
 
 # Build artifacts
 *.pdf (si se regeneran del MD)
+credenciales.txt
+.linkedin_*.png
+.github_*.png
+security-scan.sh
+test_qwen.py
+qwen_review.py
+AGENTES.md
+NEXT_TASKS.md
+create_accounts_auto.py

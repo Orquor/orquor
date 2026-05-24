@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 · Orquor</title>
+  <meta name="description" content="Page not found — Orquor" />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0B0F14;
+      --bone: #F4F1EB;
+      --signal: #3B82F6;
+      --verify: #10B981;
+      --alert: #F59E0B;
+      --muted: #64748B;
+      --stroke: #1E293B;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: var(--ink);
+      color: var(--bone);
+      font-family: "Inter", system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      height: 100%;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    a { color: var(--signal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.92em;
+      color: var(--bone);
+      background: #1E293B;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+    .container {
+      text-align: center;
+      max-width: 640px;
+      padding: 0 32px;
+    }
+    .code-block {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      color: var(--muted);
+      background: #11161C;
+      border: 1px solid var(--stroke);
+      border-radius: 6px;
+      padding: 20px 24px;
+      margin: 32px 0;
+      text-align: left;
+      overflow-x: auto;
+    }
+    .code-block .key { color: var(--signal); }
+    .code-block .val { color: var(--verify); }
+    .code-block .str { color: var(--alert); }
+    .code-block .comment { color: var(--muted); font-style: italic; }
+    h1 {
+      font-family: "Inter Tight", sans-serif;
+      font-weight: 700;
+      font-size: 96px;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: var(--signal);
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-family: "Inter Tight", sans-serif;
+      font-weight: 600;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    p { color: rgba(244,241,235,0.78); margin-bottom: 12px; }
+    .actions {
+      margin-top: 32px;
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .cta {
+      background: var(--signal);
+      color: var(--bone);
+      padding: 10px 18px;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .cta:hover { text-decoration: none; opacity: 0.9; }
+    .ghost {
+      color: var(--bone);
+      border: 1px solid var(--stroke);
+      padding: 10px 18px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .ghost:hover { text-decoration: none; border-color: var(--signal); }
+    .logo {
+      font-family: "Inter Tight", sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      position: fixed;
+      top: 24px;
+      left: 32px;
+    }
+    .logo .dot { color: var(--signal); }
+    @media (max-width: 600px) {
+      h1 { font-size: 64px; }
+      .code-block { font-size: 11px; padding: 14px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">orquor<span class="dot">.</span></div>
+
+  <div class="container">
+    <h1>404</h1>
+    <h2>This page does not exist</h2>
+    <p>
+      The resource you requested was not found. This may be because the URL
+      is mistyped, the page has moved, or it never existed.
+    </p>
+
+    <div class="code-block">
+      <span class="comment">// HTTP Response 404</span><br>
+      {<br>
+      &nbsp;&nbsp;<span class="key">"status"</span>: <span class="val">404</span>,<br>
+      &nbsp;&nbsp;<span class="key">"error"</span>: <span class="str">"Not Found"</span>,<br>
+      &nbsp;&nbsp;<span class="key">"path"</span>: <span class="str">"<script>document.write(window.location.pathname);</script>"</span>,<br>
+      &nbsp;&nbsp;<span class="key">"auditable"</span>: <span class="val">true</span><br>
+      }
+    </div>
+
+    <div class="actions">
+      <a href="/" class="cta">Return to orquor.com</a>
+      <a href="mailto:hello@orquor.com" class="ghost">Report an issue</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orquor Clinical — Demo</title>
+<style>
+:root {
+  --ink: #0B0F14; --bone: #F4F1EB; --signal: #3B82F6;
+  --verify: #10B981; --alert: #F59E0B; --error: #EF4444; --muted: #64748B;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Inter',-apple-system,sans-serif; background:var(--bone); color:var(--ink); line-height:1.6; }
+.container { max-width:960px; margin:0 auto; padding:40px 20px; }
+header { text-align:center; padding:60px 0 40px; }
+h1 { font-size:2.5rem; font-weight:700; }
+h2 { font-size:1.5rem; margin:30px 0 15px; color:var(--signal); }
+.tagline { color:var(--muted); font-size:1.1rem; margin-top:10px; }
+
+/* Demo simulator */
+.demo-box { background:white; border-radius:12px; padding:30px; margin:30px 0; box-shadow:0 1px 3px rgba(0,0,0,.1); }
+.conversation { display:flex; flex-direction:column; gap:16px; }
+.utterance { display:flex; gap:12px; align-items:flex-start; }
+.utterance.doctor { flex-direction:row; }
+.utterance.patient { flex-direction:row-reverse; }
+.avatar { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; flex-shrink:0; }
+.doctor .avatar { background:#3B82F6; color:white; }
+.patient .avatar { background:#10B981; color:white; }
+.bubble { max-width:70%; padding:12px 16px; border-radius:12px; font-size:14px; }
+.doctor .bubble { background:#EEF2FF; }
+.patient .bubble { background:#D1FAE5; }
+.original { display:block; }
+.translated { display:block; margin-top:4px; padding-top:4px; border-top:1px solid rgba(0,0,0,.1); color:var(--muted); font-style:italic; font-size:13px; }
+
+/* Verification badge */
+.verify-badge { display:inline-flex; align-items:center; gap:6px; background:#D1FAE5; color:#065F46; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:600; margin-top:8px; }
+.verify-fail { background:#FEE2E2; color:#991B1B; }
+
+/* Metrics */
+.metrics { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin:30px 0; }
+.metric-card { background:white; border-radius:12px; padding:20px; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,.1); }
+.metric-value { font-size:2rem; font-weight:700; color:var(--signal); }
+.metric-label { color:var(--muted); font-size:14px; margin-top:4px; }
+
+/* Audit log */
+.audit-log { background:#1E293B; color:#E2E8F0; border-radius:12px; padding:20px; font-family:'JetBrains Mono',monospace; font-size:12px; overflow-x:auto; margin:20px 0; }
+.log-entry { padding:4px 0; border-bottom:1px solid rgba(255,255,255,.05); }
+.log-field { color:#94A3B8; }
+.log-value { color:#67E8F9; }
+.log-pass { color:#4ADE80; }
+.log-fail { color:#F87171; }
+.log-time { color:#FBBF24; }
+
+.cta { text-align:center; margin:40px 0; }
+.btn { display:inline-block; padding:14px 32px; border-radius:8px; font-weight:600; text-decoration:none; transition:opacity .2s; }
+.btn-primary { background:var(--signal); color:white; }
+.btn-primary:hover { opacity:.9; }
+
+footer { text-align:center; padding:40px 0; color:var(--muted); font-size:14px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Orquor Clinical — Live Demo</h1>
+  <p class="tagline">Auditable Clinical Translation Orchestration</p>
+</header>
+
+<!-- Simulated conversation -->
+<div class="demo-box">
+  <h2>🩺 Consulta simulada EN→ES</h2>
+  <div class="conversation">
+    
+    <div class="utterance doctor">
+      <div class="avatar">DR</div>
+      <div>
+        <div class="bubble">
+          <span class="original">"I'm going to prescribe 10mg of morphine IV every 4 hours for the pain. Do you have any allergies?"</span>
+          <span class="translated">"Le voy a recetar 10 mg de morfina IV cada 4 horas para el dolor. ¿Tiene alguna alergia?"</span>
+        </div>
+        <div class="verify-badge">✅ Verifier V1: Dosage preserved (10mg)</div>
+        <div class="verify-badge">✅ Verifier V3: Controlled substance matched (morfina)</div>
+      </div>
+    </div>
+
+    <div class="utterance patient">
+      <div class="avatar">PT</div>
+      <div>
+        <div class="bubble">
+          <span class="original">"Soy alérgico a la penicilina. ¿Eso afecta algo?"</span>
+          <span class="translated">"I'm allergic to penicillin. Does that affect anything?"</span>
+        </div>
+        <div class="verify-badge">✅ Verifier V8: Clean Spanish, no English leakage</div>
+      </div>
+    </div>
+
+    <div class="utterance doctor">
+      <div class="avatar">DR</div>
+      <div>
+        <div class="bubble">
+          <span class="original">"Good to know. I'll note that in your chart. The morphine is safe with penicillin allergy. Take 0.5mg of lorazepam if you feel anxious before the procedure."</span>
+          <span class="translated">"Qué bueno saberlo. Lo anotaré en su expediente. La morfina es segura con alergia a penicilina. Tome 0.5 mg de lorazepam si se siente ansioso antes del procedimiento."</span>
+        </div>
+        <div class="verify-badge">✅ V1: Dosage (0.5mg) | ✅ V2: Units preserved (mg)</div>
+        <div class="verify-badge">✅ V3: lorazepam matched | ✅ V4: No excluded names</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Metrics -->
+<h2>📊 Métricas en tiempo real</h2>
+<div class="metrics">
+  <div class="metric-card">
+    <div class="metric-value">4.2%</div>
+    <div class="metric-label">WER Médico (Whisper: 11.8%)</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value">0</div>
+    <div class="metric-label">Incidentes de mistraducción</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value">13/13</div>
+    <div class="metric-label">Verifiers activos</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-value">&lt;500ms</div>
+    <div class="metric-label">Latencia por utterance</div>
+  </div>
+</div>
+
+<!-- Audit log -->
+<h2>🔒 Audit Log (RFC 3161 Timestamped)</h2>
+<div class="audit-log">
+  <div class="log-entry">
+    <span class="log-time">2026-05-24T12:34:56.789Z</span>
+    <span class="log-field"> session=</span><span class="log-value">a1b2c3</span>
+    <span class="log-field"> utterance=</span><span class="log-value">001</span>
+    <span class="log-field"> verifier=</span><span class="log-pass">PASS</span>
+    <span class="log-field"> register=</span><span class="log-value">clinical</span>
+    <span class="log-field"> sig=</span><span class="log-value">0x8f3a...</span>
+  </div>
+  <div class="log-entry">
+    <span class="log-time">2026-05-24T12:35:02.123Z</span>
+    <span class="log-field"> session=</span><span class="log-value">a1b2c3</span>
+    <span class="log-field"> utterance=</span><span class="log-value">002</span>
+    <span class="log-field"> verifier=</span><span class="log-pass">PASS</span>
+    <span class="log-field"> register=</span><span class="log-value">clinical</span>
+    <span class="log-field"> sig=</span><span class="log-value">0x9e2b...</span>
+  </div>
+  <div class="log-entry">
+    <span class="log-time">2026-05-24T12:35:08.456Z</span>
+    <span class="log-field"> session=</span><span class="log-value">a1b2c3</span>
+    <span class="log-field"> utterance=</span><span class="log-value">003</span>
+    <span class="log-field"> verifier=</span><span class="log-pass">PASS</span>
+    <span class="log-field"> register=</span><span class="log-value">clinical</span>
+    <span class="log-field"> sig=</span><span class="log-value">0x4f1c...</span>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>¿Quiere ver esto en su hospital?</h2>
+  <p style="color:var(--muted); margin-bottom:20px;">Agende una demo personalizada con datos reales de su especialidad.</p>
+  <a href="mailto:freddy@orquor.com" class="btn btn-primary">Agendar Demo →</a>
+</div>
+
+<footer>
+  Orquor Clinical · Lima, Perú · freddy@orquor.com<br>
+  Built for healthcare. Verified by math.
+</footer>
+
+</div>
+</body>
+</html>
