@@ -2,6 +2,12 @@
 
 **Auditable Clinical Translation Orchestration.** Multi-agent infrastructure for healthcare and regulated industries. Built in Lima. Operating across LATAM. Designed for proof, not performance.
 
+[![CI/CD](https://github.com/orquor/orquor/actions/workflows/ci.yml/badge.svg)](https://github.com/orquor/orquor/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![Verifiers](https://img.shields.io/badge/verifiers-13%20passing-brightgreen.svg)](06-hermes/verifiers/)
+[![Dependabot](https://img.shields.io/badge/dependabot-enabled-025e8c?logo=dependabot)](.github/dependabot.yml)
+
 ---
 
 ## What Orquor builds
