@@ -1,6 +1,6 @@
 ---
 title: "Auditable Clinical Translation Orchestration: A Verifier-Backed Approach to Real-Time Medical Language Bridging"
-author: "Freddy [Apellido] · Orquor"
+author: "Freddy Rojas · Orquor"
 date: "2026"
 abstract: |
   We introduce **Auditable Clinical Translation Orchestration (ACTO)** as a new technical category for real-time medical interpretation systems that combine automated speech recognition, machine translation, and human-in-the-loop interpreters into a single orchestrated pipeline whose every output is verified by deterministic outcome-based tests and recorded in a cryptographically timestamped audit log. We argue that the current generation of Video Remote Interpretation (VRI) services and AI-only translation tools occupies opposite ends of a quality-cost trade-off without addressing the legal, regulatory, and forensic requirements emerging in healthcare systems across Latin America and the United States. We propose ACTO as a third category that resolves the trade-off through a cooperative inference stack, a verifier-first architecture, and a regulatory-grade audit primitive. We describe the system architecture, the verifier-design methodology adapted from agent-evaluation research, and a benchmark methodology for Word Error Rate on medical terminology and translation quality on Spanish clinical text. The paper concludes with a positioning thesis for ACTO as the necessary infrastructure layer for any healthcare AI deployment subject to HIPAA, Peruvian Law 29733, Brazilian LGPD, or EU GDPR.
@@ -245,7 +245,23 @@ def verify_register_match(translated: str, requested_register: str) -> VerifierR
 
 # Acknowledgments
 
-This work draws methodologically on the broader agent-evaluation research community, in particular contributors to OpenClaw Atlas, the HiL-Bench framework, and the labelers and researchers at platforms including Outlier, Scale AI, and Labelbox who have advanced outcome-based rubric design as a practical discipline. The remaining mistakes are the author's.
+The author thanks the broader agent-evaluation research community, in particular
+contributors to OpenClaw Atlas, the HiL-Bench framework, and the labelers and
+researchers at platforms including Outlier, Scale AI, and Labelbox who have advanced
+outcome-based rubric design as a practical discipline. The verifier-design methodology
+described in Section 4 is directly indebted to this body of work.
+
+This research was conducted at Orquor. The author acknowledges the clinical partners
+who participated in the single-site pilot that generated the preliminary benchmark
+results reported in Section 5.4; their institutions requested anonymity pending
+institutional review.
+
+The author used the following open-source tools in the preparation of this work:
+Whisper (OpenAI) for ASR baselines, NLLB-200 (Meta AI) for MT initialization,
+COMET (Unbabel) for translation quality evaluation, and OpenTimestamps for
+cryptographic timestamping reference implementation.
+
+The remaining mistakes are the author's.
 
 # Contact
 

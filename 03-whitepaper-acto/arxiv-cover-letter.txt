@@ -1,0 +1,114 @@
+================================================================================
+ARXIV COVER LETTER — MODERATOR REVIEW
+================================================================================
+
+To the arXiv moderation team,
+
+We are submitting the paper:
+
+  Title:    Auditable Clinical Translation Orchestration: A Verifier-Backed
+            Approach to Real-Time Medical Language Bridging
+  Author:   Freddy Rojas (Orquor)
+  Category: cs.CL (primary); cs.CR, cs.CY (cross-list)
+
+================================================================================
+SUMMARY FOR MODERATORS
+================================================================================
+
+This paper proposes "Auditable Clinical Translation Orchestration" (ACTO)
+as a new technical category for real-time medical interpretation systems.
+ACTO combines automated speech recognition, machine translation, and
+human-in-the-loop interpreters into a pipeline where every output is verified
+by deterministic outcome-based tests and recorded in a cryptographically
+timestamped audit log.
+
+The paper makes three contributions:
+
+  1. A reference architecture for verifier-backed translation pipelines
+     (Section 3), with five required components: orchestrator, ASR, MT,
+     verifier suite, and cryptographic audit primitive.
+
+  2. A verifier-design methodology (Section 4) adapted from agent-evaluation
+     research, formalizing five principles for building deterministic test
+     suites for clinical NLP output.
+
+  3. A benchmark methodology (Section 5) with metrics (WER, COMET-22,
+     verifier pass rate, latency, human escalation rate) and preliminary
+     results from a 500-utterance evaluation set.
+
+================================================================================
+WHY THIS BELONGS ON ARXIV
+================================================================================
+
+This paper is a legitimate scientific contribution to the NLP community:
+
+  - It identifies a categorical gap in the medical interpretation literature
+    (the quality-cost-defensibility trilemma) and proposes a formal category
+    to resolve it.
+
+  - It contributes a methodology (verifier design for clinical translation)
+    that is domain-independent and reusable by other researchers.
+
+  - It proposes a standardized benchmark that enables apples-to-apples
+    comparison of medical interpretation systems — a contribution to
+    reproducible research in clinical NLP.
+
+  - It includes preliminary empirical results (Table in Section 5.4) that,
+    while explicitly labeled as non-definitive, demonstrate feasibility.
+
+  - The paper cites prior work appropriately (Costa-jussà, OpenClaw Atlas,
+    HiL-Bench, COMET-22) and situates itself in the existing literature.
+
+================================================================================
+ADDRESSING POTENTIAL CONCERNS
+================================================================================
+
+1. "Is this a product advertisement?"
+
+   No. The reference implementation (Orquor Clinical) is mentioned only as
+   a proof-of-concept in Sections 3, 5.4, and Appendix A. The paper's primary
+   contribution is the ACTO *category* and methodology. Section 8 explicitly
+   states: "We are not pursuing this as a trademark; the category is open.
+   The implementations will compete. The category benefits everyone."
+
+2. "Are the benchmark results definitive?"
+
+   No, and we are transparent about this. Section 5.4 states: "These numbers
+   are preliminary, drawn from a single-site pilot, and should not be
+   interpreted as production guarantees. They are presented here as evidence
+   that the ACTO architecture is achievable in practice, not as a competitive
+   claim. The intent of this paper is categorical, not commercial."
+
+3. "Does this paper contain medical advice or regulated content?"
+
+   No. The paper describes system architecture and methodology. Regulatory
+   sections (Section 6) analyze the *technical primitives* required for
+   compliance frameworks, not the compliance frameworks themselves.
+
+4. "Is the author affiliated with a recognized research institution?"
+
+   The author is affiliated with Orquor, a startup. arXiv accepts papers
+   from independent researchers and industry practitioners. The paper
+   includes an institutional email (research@orquor.com) for verification.
+
+================================================================================
+ENDORSEMENT REQUEST
+================================================================================
+
+As a first-time submitter, the author may need endorsement for cs.CL.
+We respectfully request moderator consideration based on the paper's
+technical merit, methodological contribution, and transparency about
+limitations.
+
+================================================================================
+CONTACT
+================================================================================
+
+Author:      Freddy Rojas
+Affiliation: Orquor
+Email:       research@orquor.com
+ORCID:       (to be provided)
+
+Submission date: May 2026
+
+================================================================================
